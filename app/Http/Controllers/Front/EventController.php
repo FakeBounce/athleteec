@@ -485,7 +485,7 @@ class EventController extends Controller
             foreach($events as $key => $event)
             {
                 
-                if($event->private && (!(Auth::user()->isAuthorisedEvent($event)) || !(Auth::user()->isAdminEvent($event->id))))
+                if($event->private && (!(Auth::user()->isAuthorisedEvent($event)) && !(Auth::user()->isAdminEvent($event->id))))
                 {
                     unset($events[$key]);
                 }

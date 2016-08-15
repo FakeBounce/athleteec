@@ -50,13 +50,15 @@ class SearchController extends Controller
                 $resultsAssociation[] = ['id' => $query->id, 'name' => $query->name, 'picture' => $query->picture];
             }
 
-            //search association
+            //search event
             $queryEvent = Event::where('name', 'LIKE', '%'.$terme.'%')
-                    ->where('private', '=', '0')
                     ->get();
 
             foreach ($queryEvent as $query) {
-                $resultsEvent[] = ['id' => $query->id, 'name' => $query->name, 'picture' => $query->picture];
+                if(!$query->private || ($user->isAuthorisedEvent($query) || $user->isAdminEvent($query->id)))
+                {
+                    $resultsEvent[] = ['id' => $query->id, 'name' => $query->name, 'picture' => $query->picture];
+                }
             }
 
         } else {

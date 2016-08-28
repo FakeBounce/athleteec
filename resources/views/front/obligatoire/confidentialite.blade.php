@@ -69,7 +69,7 @@
         </p>
         <p>
             Pour pouvoir exercer ces droits, vous pouvez : <br />
-            Code postal : 142 Avenue du faubourg saint antoine, Paris 75012<br />			Section du site web : http://athleteec.razdragor.fr/<br />	</p><hr/>
+            Code postal : 142 Avenue du faubourg saint antoine, Paris 75012<br />			Section du site web : http://athleteec.fakebounce.fr/<br />	</p><hr/>
         <h2>Droit d'acc&egrave;s</h2>
         <p>
             Nous nous engageons &agrave; reconna&icirc;tre un droit d'acc&egrave;s et de rectification aux personnes
@@ -77,7 +77,7 @@
 
 
             L'exercice de ce droit se fera :<br />
-            Code postal : 142 Avenue du faubourg saint antoine, Paris 75012<br />			Section du site web : http://athleteec.razdragor.fr/<br />	</p><hr/>
+            Code postal : 142 Avenue du faubourg saint antoine, Paris 75012<br />			Section du site web : http://athleteec.fakebounce.fr/<br />	</p><hr/>
         <h2>S&eacute;curit&eacute;</h2>
         <p>
 

@@ -20,10 +20,16 @@ class FriendsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
-        $user = Auth::user();
-        return view('front.friends', ['user' => $user]);
-    }
+public function index(){
+   $user = Auth::user();
+
+   Notifications::where('user_id', $user->id)
+       ->where('notification', 'users_links')
+       ->update(['afficher' => false]);
+
+   return view('front.friends', ['user' => $user]);
+}
+
 
     /**
      * Remove the specified resource from storage.

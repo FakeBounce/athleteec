@@ -21,8 +21,8 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Sport</th>
-                        <th>Icon</th>
+                        <th>Image</th>
+                        <th>Nom</th>
                         <th>Nb Utilisateurs</th>
                         <th>Actions</th>
                     </tr>

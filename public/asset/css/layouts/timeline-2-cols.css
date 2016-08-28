@@ -22,11 +22,13 @@
   margin-left: -1.5px;
 }
 .timeline-2-cols > li {
-  margin-bottom: 20px;
-  position: relative;
-  width: 50%;
-  float: left;
-  clear: left;
+    margin-bottom: 20px;
+    position: relative!important;
+    width: 50%!important;
+    float: left;
+    left: 0px!important;
+    clear: left!important;
+    top: 0px!important;
 }
 .timeline-2-cols > li:before,
 .timeline-2-cols > li:after {

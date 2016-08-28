@@ -8,6 +8,9 @@ use App\User;
 use App\UsersDemandsStars;
 use App\UsersEquipsSports;
 use App\UsersNewsletters;
+use App\Carac;
+use App\Carac_val;
+use App\Category;
 use App\UsersSports;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,8 +59,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
-    {
-        return view('front.user.show',['user' => $user]);
+    { 
+        return view('front.user.show',['user' => $user,'annonces' => $user->products]);
     }
 
     /**
@@ -68,32 +71,68 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $userSports = $user->sports;
-        $arraySport = [];
-
-        foreach($userSports as $us){
-            $arraySport[] = $us->id;
+        if($user->id != Auth::user()->id)
+        {
+            return view('front.user.show',['user' => $user,'annonces' => $user->products]);
         }
+        else
+        {
 
-        $sports = DB::table('sports')
-            ->whereNotIn('id', $arraySport)
-            ->get();
+            $userSports = $user->sports;
+            $arraySport = [];
 
-        $userEquipement = $user->products;
-        $arrayUser = [];
+            foreach($userSports as $us){
+                $arraySport[] = $us->id;
+            }
+            
+            $categories = DB::table('categories')->get();
+            $brands = DB::table('brands')->get();
+            $caracs = DB::table('caracs')->get();
 
-        foreach($userEquipement as $us){
-            $arrayUser[] = $us->id;
+            $sports = DB::table('sports')
+                ->whereNotIn('id', $arraySport)
+                ->get();
+
+            $userEquipement = $user->products;
+            $arrayUser = [];
+
+            foreach($userEquipement as $us){
+                $arrayUser[] = $us->id;
+            }
+
+            $equipements = DB::table('products')
+                ->whereNotIn('id', $arrayUser)
+                ->get();  
+            return view('front.user.edit',['user' => $user, 'sports' => $sports,'equipements' => $equipements,'categories' => $categories,'brands' => $brands,'caracs' => $caracs]);
         }
-
-        $equipements = DB::table('products')
-            ->whereNotIn('id', $arrayUser)
-            ->get();
-
-
-        return view('front.user.edit',['user' => $user, 'sports' => $sports,'equipements' => $equipements]);
     }
 
+    public function annonce(User $user)
+    {        
+        return view('front.user.annonce',['user' => $user,'equipements' => $user->products]);
+    }
+
+    public function annonce_add(User $user, Request $request)
+    {        
+
+        if(!empty($request->input('annonce')))
+        {
+            $products = $request->input('annonce');
+
+            foreach($products as $product)
+            {
+                $prod = Product::find($product);
+                if($prod->price>0)
+                {
+                    $prod->sell = 1;
+                    $prod->save();
+                }
+            }
+        }
+
+
+        return Redirect::route('user.annonce', ['user' => $user])->with('message', 'Modification effectué avec succès');
+    }
     /**
      * Update the specified resource in storage.
      *

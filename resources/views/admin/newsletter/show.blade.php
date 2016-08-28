@@ -46,7 +46,26 @@
                                     {{ session('message') }}
                                 </div>
                             @endif
-                        <a href="{{ route('admin.newsletter.send', ['newsletter' => $newsletter->id]) }}" class="btn btn-default">Envoyé</a>
+                        <div class="row">
+                            <form class="form_newsletter">
+                                <div class="col-xs-12">
+                                    Pour envoyer à des fans de sport particuliers, cochez les cases (envoi à tout le monde par défaut)
+                                </div>
+                                @foreach($sports as $sport)
+                                    <div class="col-xs-4">
+                                        <input type="checkbox" name="sport[]" value="<?php echo $sport->id; ?>"><?php echo $sport->name; ?>
+                                    </div>
+
+                                @endforeach
+                                <input type="hidden" name="id" value="<?php echo $newsletter->id; ?>">
+                                <div class="col-xs-12">
+                                    <span class="btn btn-default send_newsletter">Envoyer</span>
+                                </div>
+                                <div class="col-xs-12 message_retour">
+                                    
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,4 +76,31 @@
 
 @section('js')
     <script src="{{ asset('asset/js/jquery/jquery.js') }}"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+        $('body').on('click','.send_newsletter', function(e){
+            var fdata = $(this).parent().parent().serialize();
+            console.log(fdata);
+            console.log($(this).parent().parent());
+            $.ajax({
+                type:'POST',
+                url:"{{route('admin.newsletter.send')}}",
+                data:fdata,
+                processData: false,
+                success:function(data) {
+                    console.log('Success !');
+                    $('.message_retour').html(data.message);
+                },
+                error:function(jqXHR)
+                {
+                    $('.message_retour').html("Une erreur s'est produite. Veuillez recharger la page et recommencer.");
+                }
+            });
+        });
+    </script>
 @endsection

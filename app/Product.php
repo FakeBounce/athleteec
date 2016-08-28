@@ -19,7 +19,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'ean','name', 'description', 'brand_id', 'picture', 'price', 'url', 'created_at', 'updated_at', 'brand_id', 'category_id'
+        'ean','name', 'description', 'brand_id', 'picture', 'price', 'url','sell', 'created_at', 'updated_at', 'category_id'
     ];
 
     /**
@@ -37,6 +37,14 @@ class Product extends Model
     public function sport()
     {
         return $this->belongsToMany('App\Sport', 'users_equips_sports', 'sport_id', 'product_id');
+    }
+    public function categorie()
+    {
+        return $this->belongsTo('App\Categorie');
+    }
+    public function carac_vals()
+    {
+        return $this->hasMany('App\Carac_val');
     }
 
 

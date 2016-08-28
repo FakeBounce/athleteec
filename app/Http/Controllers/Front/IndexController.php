@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Event;
+use App\User;
 use App\Http\Controllers\Controller;
 use App\Publication;
 use App\Sport;
@@ -47,8 +48,30 @@ class IndexController extends Controller
             ->orderBy('started_at', 'DESC')
             ->take(3)
             ->get();
+        
+        $stars = User::whereIn('id', $arrayFriends)
+            ->where('star','1')
+            ->get();
+        
+        if(!empty($stars))
+        {
+            foreach($stars as $star){
+                $arrayStars[] = $star->id;
+            }
 
-        return view('front.index', ["sports" => $sports, "publications" => $posts, "events" => $events]);
+            $star_posts = Publication::whereIn('user_id', $arrayStars)
+            ->where('status', '!=', 'Blocked')
+            ->orderBy('updated_at', 'DESC')
+            ->take(1)
+            ->get();
+
+            return view('front.index', ["sports" => $sports, "publications" => $posts, "events" => $events, "star_pub" => $star_posts->first()]);
+            
+        }
+        else
+        {
+            return view('front.index', ["sports" => $sports, "publications" => $posts, "events" => $events]);
+        }
     }
 
     /**

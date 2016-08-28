@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        @if(Auth::user() != $user)
+                        @if(Auth::user()->id != $user->id)
                             <div>
                                 <a href="{{ url('conversation/'.$user->user_id) }}" class="btn btn-block btn-success"><i class="fa fa-envelope-alt"></i>Envoyer un
                                     message</a>
@@ -94,10 +94,14 @@
                                 </h3>
                             </div>
                             <!-- END USER STATUS-->
-                            @if(Auth::user() == $user)
+                            @if(Auth::user()->id == $user->id)
                                 <div class="col-sm-2 col-md-2 hidden-xs">
                                     <a id="edit-profile-button" href="{{ route('user.edit',['user' => $user]) }}"
                                        class="btn btn-block btn-primary">Editer le profil</a>
+                                </div>
+                                <div class="col-sm-2 col-md-2 hidden-xs">
+                                    <a id="" style="margin-top:20px;" href="{{ route('user.annonce',['user' => $user]) }}"
+                                       class="btn btn-block btn-primary">Ajouter une annonce</a>
                                 </div>
                             @endif
                         </div>
@@ -128,6 +132,9 @@
                                 </li>
                                 <li>
                                     <a href="#photo" data-toggle="tab" aria-expanded="false">Photos</a>
+                                </li>
+                                <li>
+                                    <a href="#annonce" data-toggle="tab" aria-expanded="false">Annonces</a>
                                 </li>
 
                             </ul>
@@ -313,18 +320,44 @@
                                                 <div class="col-md-2">
                                                     <div class="equipement-cadre">
                                                         <div class="equipement-box">
-                                                            <img src="{{asset($equipment->picture)}}"
+                                                            <img src="{{asset('images/'.$equipment->picture)}}"
                                                                  alt="Avatar" class="img-thumbnail img-responsive">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-10">
-                                                    <a href="{{ $equipment->url }}">
+                                                    <a href="{{ route('product.show',['product' => $equipment]) }}" target="_blank">
                                                         <dd>{{ $equipment->name }}</dd>
                                                     </a>
                                                     <dd>{{ $equipment->description }}</dd>
+                                                <a href=" {{ route('product.comparator',['product' => $equipment]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
                                                 </div>
                                             </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="annonce">
+                                    <div class="row">
+                                        @foreach($user->products as $annonce)
+                                            @if($annonce->sell == 1)
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="equipement-cadre">
+                                                            <div class="equipement-box">
+                                                                <img src="{{asset('images/'.$annonce->picture)}}"
+                                                                     alt="Avatar" class="img-thumbnail img-responsive">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <a href="{{ route('product.show',['id' => $equipment->id]) }}">
+                                                            <dd>{{ $annonce->name }}</dd>
+                                                        </a>
+                                                        <dd>{{ $annonce->description }}</dd>
+                                                        <dd>{{ $annonce->price }}€</dd>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>

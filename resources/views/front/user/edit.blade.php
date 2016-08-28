@@ -195,8 +195,6 @@
                                             </div>
                                             <div class="tab-pane active equipement" style="display: none;">
                                                 <div class="row equip">
-                                                    <dt>Equipements utilisées</dt>
-                                                    <dd>(Cocher pour supprimer)</dd>
                                                 @foreach($user->products as $equipment)
                                                         <div class="row">
                                                             <ul class="list-unstyled"></dd>
@@ -210,43 +208,12 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-9">
-                                                                        <a href="{{ $equipment->url }}">
+                                                                        <a href="{{ route('product.show',['product' => $equipment]) }}" target="_blank">
                                                                             <dd>{{ $equipment->name }}</dd>
                                                                         </a>
                                                                         <dd>{{ $equipment->description }}</dd>
                                                                     </div>
-                                                                    <div class="col-md-1 checkbox-correct">
-                                                                        <input type="checkbox" id="{{$equipment->id}}" name="equipementsuppr[]" value="{{$equipment->id}}" >
-                                                                    </div>
 
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    @endforeach
-                                                    <dt>Equipements disponible</dt>
-                                                    <dd>(Cocher pour selectionner)</dd>
-                                                    @foreach($equipements as $equip)
-                                                        <div class="row">
-                                                            <ul class="list-unstyled"></dd>
-                                                                <li>
-                                                                    <div class="col-md-1">
-                                                                        <div class="equipement-cadre">
-                                                                            <div class="equipement-box">
-                                                                                <img src="{{asset('images/'.$equip->picture)}}"
-                                                                                     alt="Avatar" class="img-thumbnail img-responsive">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-9">
-                                                                        <a href="{{ $equip->url }}">
-                                                                            <dd>{{ $equip->name }}</dd>
-                                                                        </a>
-                                                                        <dd>{{ $equip->description }}</dd>
-                                                                    </div>
-
-                                                                    <div class="col-md-1 checkbox-correct">
-                                                                        <input type="checkbox" id="{{$equip->id}}" name="equipement[]" value="{{$equip->id}}">
-                                                                    </div>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -431,6 +398,20 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 padding-bottom-correct">
+                                        <label for="category" class="col-md-2">Catégorie</label>
+                                        <div class="col-md-10">
+                                            <input type="text" autocomplete="off" id="prod_category" class="form-control" name="category" placeholder="...">
+                                            <p id="prod_input"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 padding-bottom-correct">
+                                        <label for="brand" class="col-md-2">Marque de l'équipement</label>
+                                        <div class="col-md-10">
+                                            <input type="text" autocomplete="off" id="brand_category" class="form-control" name="brand" placeholder="...">
+                                            <p id="brand_input"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 padding-bottom-correct">
                                         <label for="description" class="col-md-2 control-label">Description</label>
                                         <div class="col-md-10">
                                             <input type="text" class="form-control" name="description" placeholder="...">
@@ -468,4 +449,142 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+<script>
+    
+    
+    
+    
+        var i = 0;
+        var caracs = new Array();
+        @foreach($caracs as $carac)
+            caracs[i] = {!! json_encode($carac) !!};
+            i++;
+        @endforeach
+        
+        $('body').on('keyup','#carac_category',function(e){
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            $("#carac_input").html('');
+            
+            if(val_length != 0)
+            {
+                $(caracs).each( function( i, carac ) {
+                    if (carac.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
+                        $("#carac_input").append('<span class="carac_select">'+carac.name+'</span> ');
+                    }
+                });
+            }
+        });
+    
+    
+        $('body').on('click','.carac_select',function(e){
+            $('#carac_category').val($(this).html());
+            $("#carac_input").html('');
+        });
+    
+    
+        var i = 0;
+        var categories = new Array();
+        @foreach($categories as $category)
+            categories[i] = {!! json_encode($category) !!};
+            i++;
+        @endforeach
+        
+        $('body').on('keyup','#prod_category',function(e){
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            $("#prod_input").html('');
+            
+            if(val_length != 0)
+            {
+                $(categories).each( function( i, category ) {
+                    if (category.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
+                        $("#prod_input").append('<span class="category_select">'+category.name+'</span> ');
+                    }
+                });
+            }
+        });
+    
+        $('body').on('click','.category_select',function(e){
+            $('.carac').remove();
+            $('#prod_category').val($(this).html());
+            
+            $(categories).each( function( i, category ) {
+                if (category.name.toLowerCase() == $('#prod_category').val().toLowerCase()) {
+                    $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                    $(caracs).each( function( i, carac ) {
+                        if(carac.category_id == category.id)
+                        {
+                                $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..."></div></div>');
+                        }
+                    });
+                }
+            });
+            
+            $("#prod_input").html('');
+        });
+    
+    
+        $('body').on('click','.carac_add',function(e){
+            $(this).parent().remove();
+            $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+            $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">Valeur de la caractéristique</label><div class="col-md-10"><input type="text" class="form-control" name="new_carac_val[]" placeholder="42"></div></div>');
+            $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">Nom de la caractéristique</label><div class="col-md-10"><input type="text" class="form-control" name="new_carac_name[]" placeholder="Pointure, Taille, Longueur..."></div></div>');
+        });
+    
+        $('body').on('blur','#prod_category',function(e){
+            $('.carac').remove();
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            if(val_length != 0)
+            {
+                $(categories).each( function( i, category ) {
+                    if (category.name.toLowerCase() == val.toLowerCase()) {                    
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                        $(caracs).each( function( i, carac ) {
+                            if(carac.category_id == category.id)
+                            {
+                                    $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..."></div></div>');
+                            }
+                        });
+                        }
+                });
+            }
+        });
+    
+        var i = 0;
+        var brands = new Array();
+        @foreach($brands as $brand)
+            brands[i] = {!! json_encode($brand) !!};
+            i++;
+        @endforeach
+        
+        $('body').on('keyup','#brand_category',function(e){
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            $("#brand_input").html('');
+            
+            if(val_length != 0)
+            {
+                $(brands).each( function( i, brand ) {
+                    if (brand.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
+                        $("#brand_input").append('<span class="brand_select">'+brand.name+'</span> ');
+                    }
+                });
+            }
+        });
+    
+    
+        $('body').on('click','.brand_select',function(e){
+            $('#brand_category').val($(this).html());
+            $("#brand_input").html('');
+        });
+</script>
 @endsection

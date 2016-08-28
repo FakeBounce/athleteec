@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price')->nullable();
             $table->string('url')->nullable();
             $table->bigInteger('brand_id')->nullable();
+            $table->bigInteger('sell')->nullable();
             $table->bigInteger('category_id')->nullable();
             $table->timestamps();
         });

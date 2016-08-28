@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Message;
 use Validator;
 use App\Http\Controllers\Controller;
 
@@ -26,6 +28,14 @@ class AssociationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    protected $mailer;
+
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+    
     public function index()
     {
         $user = Auth::user();
@@ -173,6 +183,30 @@ class AssociationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function msg(Request $request, Association $association)
+    {
+        $data = $request->all();
+        $user = Auth::user();
+        if($user->isAdminAssociation($association->id)){
+            
+            foreach($association->members as $member)
+            {
+                $actual_member = $member->user;
+                $this->mailer->send('emails.newsletter', ['text' => $data['text'] ] ,function (Message $m) use ($user,$actual_member,$association) {
+                        $m->from($user->email, 'Athleteec - Association : '.$association->name);
+                        $m->to($actual_member->email)->subject('Athleteec - Association : '.$association->name.', Message groupé');
+                });
+            }
+            
+            return \Response::json(array(
+                'success' => true
+            ));
+        }        
+        
+        return \Response::json(array(
+            'success' => false
+        ));
+    }
     public function update(Request $request, Association $association)
     {
         $data = $request->all();
@@ -270,29 +304,31 @@ class AssociationController extends Controller
      */
     public function join(Association $association)
     {
-        $userC = Auth::user();
-        $members = $association->members;
-        foreach($members as $member){
-            $user = $member->user;
-            if(!is_null($user)){
-                Notifications::firstOrCreate([
-                    'user_id' => $user->id,
-                    'userL_id' => $association->id, //OSEF du nom de la colonne, on récupère les bonnes info grace à la colone notification.
-                    'libelle' => $userC->firstname." ".$userC->lastname." a rejoint l'association ".$association->name,
-                    'notification' => 'associations',
-                    'afficher' => true]);
-            }
+       $userC = Auth::user();
+       $members = $association->members;
+       foreach($members as $member){
+           $user = $member->user;
+           if(!is_null($user)){
+               Notifications::firstOrCreate([
+                   'user_id' => $user->id,
+                   'userL_id' => $association->id,
+                   'libelle' => $userC->firstname." ".$userC->lastname,
+                   'action_id' => $association->id,
+                   'action_name' => $association->name,
+                   'notification' => 'associations',
+                   'afficher' => true]);
+           }
 
-        }
+       }
 
-        UsersAssociations::create(array(
-           'user_id' => $userC->id,
-            'association_id' => $association->id,
-            'is_admin' => false
-        ));
+       UsersAssociations::create(array(
+          'user_id' => $userC->id,
+           'association_id' => $association->id,
+           'is_admin' => false
+       ));
 
 
-        return Redirect::back();
+       return Redirect::back();
     }
 
     public function quit(Association $association){

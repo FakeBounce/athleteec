@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Input;
 use DB;
 use App\User;
 use App\Notifications;
+use App\Product;
 
 class SearchController extends Controller
 {
@@ -50,6 +51,11 @@ class SearchController extends Controller
                 $resultsAssociation[] = ['id' => $query->id, 'name' => $query->name, 'picture' => $query->picture];
             }
 
+            //search product
+            $queryproduct = Product::where('name', 'LIKE', '%'.$terme.'%')
+                ->where('sell', 1)
+                ->get();
+
             //search event
             $queryEvent = Event::where('name', 'LIKE', '%'.$terme.'%')
                     ->get();
@@ -65,7 +71,7 @@ class SearchController extends Controller
             $results = [];
         }
 
-        return view('front.search', [ 'results' => $results,'resultsEvent' => $resultsEvent , 'resultsAssociation' => $resultsAssociation, 'user' => $user]);
+        return view('front.search', [ 'results' => $results,'resultsEvent' => $resultsEvent , 'resultsAssociation' => $resultsAssociation,'resultsProduct' => $queryproduct, 'user' => $user]);
     }
 
 }

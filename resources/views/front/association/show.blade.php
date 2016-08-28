@@ -47,15 +47,22 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4 col-md-3">
+            @if($user->id != $association->user_id)
+            <div class="col-sm-4">
                 <a href="{{ url('conversation/'.$association->user_id) }}" class="btn btn-block btn-success"><i class="fa fa-envelope-alt"></i>Envoyer un message</a>
             </div>
             <div class="col-sm-8 col-md-9">
+            @else
+            <div class="col-sm-12">
+            @endif
                 @if($user->isAdminAssociation($association->id))
-                    <div class="col-sm-6 col-md-4 col-lg-2">
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <span class="btn btn-block btn-primary send_msg"><i class="fa fa-write"></i>Envoyer un message groupé</span>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-2">
                         <a class="btn btn-block btn-primary" href="{{ route('association.edit', ['association' => $association]) }}"><i class="fa fa-edit"></i>Editer</a>
                     </div>
-                    <div class="col-sm-6 col-md-4 col-lg-2">
+                    <div class="col-sm-3 col-md-3 col-lg-2">
                         <a class="btn btn-block btn-primary" href="{{ route('association.delete', ['association' => $association]) }}">Supprimer</a>
                     </div>
                 @endif
@@ -554,6 +561,7 @@
             </div>
         </div>
     </div>
+        <div class="return"></div>
     <input id="loadAllPublication" value="1" type="hidden" />
 @endsection
 
@@ -589,6 +597,30 @@
                 map: map
             });
         }
+        
+        
+        $('body').on('click','.send_msg',function(){
+           $('.form_assoc').remove();
+            $(this).parent().append('<form class="form_assoc"><textarea name="text"></textarea><a class="valid_form_assoc">Valider</a></form>');
+        });
+        
+        $('body').on('click','.valid_form_assoc',function(){
+            var fdata = $('.form_assoc').serialize();
+            $.ajax({
+                url: "{{ route('association.msg', ['association' => $association->id])}}",
+                type: "post",
+                dataType: 'json', // selon le retour attendu
+                data: fdata,
+                success: function(data) {
+                   console.log('Success !');
+                },
+                error:function(jqXHR)
+                {
+                    console.log('Erreur');
+                    $('.return').html(jqXHR.responseText);
+                }
+            });
+        });
         // [END region_geolocation]
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWyHTNe168m9pt0cOiXjlIL9BBUaYT2SI&libraries=geometry,places&callback=init"

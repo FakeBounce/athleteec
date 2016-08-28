@@ -50,6 +50,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         $this->attributes['password'] = bcrypt($value);
     }
+    
 
     public function sports()
     {
@@ -218,23 +219,32 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->orderBy('updated_at', 'DESC');
     }
 
-    public function getallnotifications(){
-        return $this->hasMany('App\Notifications')
-            ->whereIn('notification', ['events', 'associations', 'groups', 'users_links'])
-            ->orderBy('updated_at', 'DESC');
+    
+        public function getallnotifications(){
+   return $this->hasMany('App\Notifications')
+       ->whereIn('notification', ['events', 'associations', 'groups', 'users_links', 'produitsajout', 'produitsajoutstar'])
+       ->orderBy('created_at', 'DESC');
     }
 
     public function getnotifications(){
-        return $this->hasMany('App\Notifications')
-            ->where('afficher', true)
-            ->orderBy('id', 'DESC');
+       return $this->hasMany('App\Notifications')
+           ->where('afficher', true)
+           ->where('notification', '!=' ,'users_links')
+           ->orderBy('id', 'DESC');
     }
 
+    public function getnotificationstrue(){
+       return $this->hasMany('App\Notifications')
+           ->where('afficher', true)
+           ->where('notification', '!=' ,'users_links')
+           ->orderBy('id', 'DESC');
+    }
     public function getfriendsnotificationstrue(){
-        return $this->hasMany('App\Notifications')
-            ->where('afficher', true)
-            ->where('notification', 'users_links')
-            ->orderBy('updated_at', 'DESC');
+       return $this->hasMany('App\Notifications')
+           ->where('afficher', true)
+           ->where('notification', 'users_links')
+           ->orderBy('updated_at', 'DESC')
+           ->get();
     }
 
     public function getfriendsnotifications(){
@@ -257,6 +267,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->orderBy('updated_at', 'DESC')
             ->limit(8);
     }
+
 
     /**
      * Get the name of the unique identifier for the user.

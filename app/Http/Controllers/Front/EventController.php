@@ -410,26 +410,29 @@ class EventController extends Controller
      */
     public function join(Event $event)
     {
-        $userC = Auth::user();
-        $members = $event->members;
-        foreach($members as $member){
-            $user = $member->user;
-            if(!is_null($user)){
-                Notifications::firstOrCreate([
-                    'user_id' => $user->id,
-                    'userL_id' => $event->id, //OSEF du nom de la colonne, on récupère les bonnes info grace à la colone notification.
-                    'libelle' => $userC->firstname." ".$userC->lastname." a rejoint l'event ".$event->name,
-                    'notification' => 'events',
-                    'afficher' => true]);
-            }
-            UsersEvents::create(array(
-               'user_id' => $userC->id,
-                'event_id' => $event->id,
-                'is_admin' => false
-            ));
-        }
+       $userC = Auth::user();
+       $members = $event->members;
+       foreach($members as $member){
+           $user = $member->user;
+           if(!is_null($user)){
+               Notifications::firstOrCreate([
+                   'user_id' => $user->id,
+                   'userL_id' => $userC->id, //OSEF du nom de la colonne, on récupère les bonnes info grace à la colone notification.
+                   'libelle' => $userC->firstname." ".$userC->lastname,
+                   'action_id' => $event->id,
+                   'action_name' => $event->name,
+                   'notification' => 'events',
+                   'accepter' => 1,
+                   'afficher' => true]);
+           }
+           UsersEvents::create(array(
+              'user_id' => $userC->id,
+               'event_id' => $event->id,
+               'is_admin' => false
+           ));
+       }
 
-        return Redirect::back();
+       return Redirect::back();
     }
 
     public function quit(Event $event){
@@ -452,7 +455,6 @@ class EventController extends Controller
         if(is_array($publication) && array_key_exists('errors',$publication)){
             return Redirect::back()->withErrors($publication['errors']);
         }
-
         $publication['event_id'] = $event->id;
         Publication::create($publication);
 
@@ -518,5 +520,7 @@ class EventController extends Controller
             'success' => true
         ));
     }
+    
+
 
 }

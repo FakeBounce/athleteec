@@ -130,7 +130,7 @@
                                     <div class="panel-body" style="padding: 0px">
                                         <div class="tab-content">
                                             <div class="tab-pane fade active in" id="tab_home">
-                                                <form role="form" style="position: relative" action="{{ route("event.post.store", ['assocation' => $event->id])}}" method="post" enctype="multipart/form-data">
+                                                <form role="form" style="position: relative" action="{{ route("event.post.store", ['event' => $event->id])}}" method="post" enctype="multipart/form-data">
                                                     {{csrf_field()}}
                                                     <textarea id="user-post" name="message_status" placeholder="Partage ton statut" rows="3" class="form-control" style="resize: none;border: none;box-shadow: none" ></textarea>
                                                     <div class="form-actions panel-foo">
@@ -147,7 +147,7 @@
                                                 </form>
                                             </div>
                                             <div class="tab-pane fade" id="tab_profile">
-                                                <form role="form" style="position: relative" action="{{ route("event.act.store", ['assocation' => $event->id])}}" method="post" enctype="multipart/form-data">
+                                                <form role="form" style="position: relative" action="{{ route("event.act.store", ['event' => $event->id])}}" method="post" enctype="multipart/form-data">
                                                     {{csrf_field()}}
                                                     <div style="padding: 10px;">
                                                         <div class="form-group">
@@ -360,8 +360,8 @@
                                             }
                                         ?>
                                         <br>
-                                        <button class="btn btn-default" style="padding:4px;{{$dest}}" id="destituer" data-text="{{$member->id}}">Destituer</button>
-                                        <button class="btn btn-default" style="padding:4px;{{$promot}}" id="promouvoir" data-text="{{$member->id}}">Promouvoir</button>
+                                        <button class="btn btn-default" style="padding:4px;{{$dest}}" id="edestituer" data-text="{{$member->id}}">Destituer</button>
+                                        <button class="btn btn-default" style="padding:4px;{{$promot}}" id="epromouvoir" data-text="{{$member->id}}">Promouvoir</button>
                                     @endif
                                 </div>
                             @endforeach

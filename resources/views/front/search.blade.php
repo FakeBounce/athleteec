@@ -50,6 +50,32 @@
         </div>
     </div>
     @endif
+    @if(!empty($resultsProduct))
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+                <div class="page-header" style="border-bottom-color: #31353E">
+                    <h2>Équipements</h2>
+                </div>
+                @foreach($resultsProduct as $prod)
+                    <div class="col-sm-6 col-md-4">
+                        <div class="team-member">
+                            <a href="{{ route('product.show', ['product' => $prod->id]) }}" target="_blank">
+                                <div class="team-detail">
+                                    <span class="member-photo" style="display: inline-block;float: left">
+                                        <img class="imgonefriend" src="{{asset('images/'.$prod->picture)}}" alt="{{ $prod->name }}" width="100px" height="100px">
+                                    </span>
+                                    <h4>{{ $prod->name }}</h4>
+                                    {{ $prod->description }}<br>
+                                    {{ $prod->price }}€<br>
+                                                <a href=" {{ route('product.comparator',['product' => $prod]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
     @if(!empty($resultsAssociation))
         <div class="row">
             <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
@@ -112,4 +138,5 @@
             });
         });
     </script>
+
 @endsection

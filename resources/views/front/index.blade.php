@@ -12,9 +12,15 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="button-group filters-button-group">
+                <button class="button is-checked" data-filter="*">show all</button>
+                @foreach($sports as $sport)
+                <button class="button" data-filter=".sport<?php echo $sport->id; ?>"><?php echo $sport->name; ?></button>
+                @endforeach
+            </div>
+                        <div class="col-md-12">
                 <!-- //Notice .timeline-2-cols class-->
-                <ul class="timeline-2-cols">
+                <ul class="timeline-2-cols grid">
                     <li>
                         <!-- //Notice .timeline-badge class-->
                         <div class="timeline-badge primary">
@@ -113,11 +119,192 @@
                                             </div>
                                         </form>
                                     </div>
+                                    
+                                    
+                                    @if(count($publications)==0)
+                        <li class="timeline-inverted">
+                            <div class="timeline-panel">
+                                <div class="timeline-body">
+                                    <div class="post_activity_msg">
+                                        <h1>Première utilisation?</h1>
+                                        <div>Postez une publication pour commencer l'aventure ATHLETEEC!</div>
+                                        <br>
+                                        <div>Les images et les vidéos youtube que vous publier se retrouvent dans votre <a href="{{ route('user.show',['user' => Auth::user()->id]) }}"><b>profil</b></a>.</div>
+                                        <br>
+                                        <div>Recherchez vos amis sportifs en utilisant la barre de recherche via leurs noms et prénoms ou bien par leur adresses mails.</div>
+                                        <br>
+                                        <br>
+                                        <div>Créer un <a href="{{ route('event.create') }}"><b>évènement</b></a> et une <a href="{{ route('association.create') }}"><b>association</b></a> n'a jamais été aussi simple!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    @endif
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <?php $i = 1;$y = 0; ?>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <?php 
+                        if(!empty(Auth::user()->sports) && !empty($star_pub)) 
+                        {
+                    ?>
+                            <li id="<?php
+                                    if(is_null($star_pub->activity)){
+                                        echo "publication-".$star_pub->id;
+                                    }else{
+                                        echo "activite-".$star_pub->activity->id;
+                                    }
+                                ?>" class="
+                                    <?php 
+                                           if(!is_null($star_pub->activity)) 
+                                           { 
+                                               echo "sport".$star_pub->activity->sport->id; 
+                                           }
+                                    ?> publicationJS">
+                                <div class="timeline-badge primary">
+                                    <a href="#"><i rel="tooltip" title="{{ $star_pub->date_start }}" class="glyphicon glyphicon-record"></i>
+                                    </a>
+                                </div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading row" style="margin: 0;">
+                                        <div style="margin:0 10px 0 0;float:left;">
+                                            <a href="{{ route("user.show", $star_pub->user->id ) }}">
+                                                <img src="<?php echo $star_pub->user->picture ?>" alt="Image" class="img-responsive" style="width: 50px;height:50px; margin: 5px;display: inline-block;">
+                                            </a>
+                                        </div>
+                                        <div style="margin: 10px;float:left;">
+                                    Truc de star
+                                            @if($star_pub->user->star == true)
+                                                <img src="{{ asset('images/medal-1.png') }}" alt="medal">
+                                            @endif
+                                            @if(!is_null($star_pub->association))
+                                                <span>{{$star_pub->user->firstname.' '.$star_pub->user->lastname}} - <a href="{{ route('association.show',['association' => $star_pub->association->id]) }}">{{ $star_pub->association->name }}</a></span><br>
+                                            @elseif(!is_null($star_pub->event))
+                                                <span>{{ $star_pub->user->firstname.' '.$star_pub->user->lastname}} - <a href="{{ route('event.show',['event' => $star_pub->event->id]) }}">{{ $star_pub->event->name }}</a></span><br>
+                                            @else
+                                                <span>{{ $star_pub->user->firstname.' '.$star_pub->user->lastname}}</span><br>
+                                            @endif
+                                            <small><i aria-hidden="true" class="fa fa-clock-o"></i> {{ $star_pub->timeAgo($star_pub->created_at) }}</small>
+
+                                            <div class="btn-group dropdown-post">
+                                                <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="font-size: 8px;"><i class="fa fa-chevron-down"></i>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    @if(Auth::user()->id == $star_pub->user_id)
+                                                        <li>
+                                                            <a href="#" onclick="
+                                                                <?php
+                                                                    if(is_null($star_pub->activity)){
+                                                                        echo "editpost(".$star_pub->id.")";
+                                                                    }else{
+                                                                        echo "editact(".$star_pub->activity->id.")";
+                                                                    }
+                                                                ?>">
+                                                                <span class="fa fa-pencil"></span> Modifier</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" id="deletepost">
+                                                                <span class="fa fa-trash-o"></span> Supprimer</a>
+                                                        </li>
+                                                    @endif
+                                                    <li>
+                                                        <a href="#" id="signalepost">
+                                                            <span class="fa fa-exclamation-triangle"></span> Signaler</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-body">
+                                        @if(is_null($star_pub->activity))
+                                            <div class="post_activity_msg">
+                                                {{$star_pub->message}}
+                                            </div>
+                                            <div class="post_picture_video">
+                                                @if(!is_null($star_pub->video))
+                                                    <div class="video-container"><iframe src="https://www.youtube.com/embed/{{$star_pub->video->url}}" frameborder="0" allowfullscreen></iframe></div>
+                                                @elseif(!is_null($star_pub->picture))
+                                                    <img src="{{ asset($star_pub->picture) }}" alt="" class="img-responsive">
+                                                @endif
+                                            </div>
+
+                                        @else
+                                            <div class="post_picture_video">
+                                                @if(!is_null($star_pub->video))
+                                                    <div class="video-container"><iframe src="https://www.youtube.com/embed/{{$star_pub->video->url}}" frameborder="0" allowfullscreen></iframe></div>
+                                                @elseif(!is_null($star_pub->picture))
+                                                    <img src="{{ asset($star_pub->picture) }}" alt="" class="img-responsive">
+                                                @endif
+                                            </div>
+                                            <div class="post_activity">
+                                                <div class="post_activity_img">
+                                                    <img src="{{ asset("../images/icons/".$star_pub->activity->sport->icon) }}" alt="{{ $star_pub->activity->sport->name }}" class="img-responsive">
+                                                </div>
+                                                <div class="post_activity_stats">
+                                                    <span data-text="{{$star_pub->activity->date_start}}"><i aria-hidden="true" class="fa fa-calendar"></i>{{$star_pub->activity->getDateStartString() }}</span>
+                                                    <span data-text="{{$star_pub->activity->getTimeSecondes() }}">Durée : {{$star_pub->activity->time }}</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="post_activity_msg">
+                                                    {{$star_pub->message}}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="timeline-footer">
+                                        <div class="comments" id="comments-{{ $star_pub->id }}">
+                                            @foreach($star_pub->commentspost as $comment)
+                                                <div class="comment" id="comment-{{$comment->id}}">
+                                                    <a class="pull-left" href="{{ route("user.show", $comment->user->id ) }}">
+                                                        <img width="35" height="35" class="comment-avatar" alt="{{ $comment->user->firstname.' '.$comment->user->lastname }}" src="{{ $comment->user->picture }}">
+                                                    </a>
+                                                    <div class="comment-body">
+                                                        <span class="message"><strong>{{ $comment->user->firstname.' '.$comment->user->lastname }}</strong> {{ $comment->message }}</span>
+                                                        <span class="time">{{ $comment->timeago($comment->created_at) }}</span>
+                                                    </div>
+                                                    <span class="action">
+                                                        <i class="fa fa-warning" id="signalComment"></i>
+                                                        @if(Auth::user()->id == $comment->user->id)
+                                                            <i class="fa fa-close" id="deleteComment"></i>
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                            @endforeach
+                                            @if($star_pub->comments->count() > 3)
+                                                 <p class='moreComment' data-url="1">Plus de commentaires</p>
+                                            @endif
+                                            <div class="comment">
+                                                <a class="pull-left" href="{{ route("user.show", $star_pub->user->id ) }}">
+                                                    <img width="35" height="35" class="comment-avatar" alt="{{Auth::user()->name}}" src="{{ Auth::user()->picture }}">
+                                                </a>
+                                                <div class="comment-body">
+                                                    <input type="text" class="form-control" name="{{ $star_pub->id }}" id="post-comment" placeholder="Ecris un commentaire...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                    
+                   
+                    <?php
+                        }
+                    ?> 
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <?php $i = 0;$y = 0; ?>
                     @for($z =0; $z < count($publications);$z++)
                         @if($y < count($events) && $i % 3 == 0)
                             <?php
@@ -125,7 +312,16 @@
                                 $y++;
                                 $z--;
                             ?>
-                            <li class="<?php if($i%2){echo 'timeline-inverted';} ?>">
+                            <li class="<?php if($i%2){echo 'timeline-inverted';} if(!is_null($publication->activity)) 
+                                       { 
+                                           echo " element-item sport".$publication->activity->sport->id; 
+                                       } 
+                                       
+                                       else
+                                       {
+                                           echo " element-item ";
+                                       } 
+                                       ?>">
                                 <div class="timeline-badge primary">
                                     <a href="#"><i rel="tooltip" title="{{ $event->created_at }}" class="glyphicon glyphicon-record <?php if($i%2){echo 'timeline-inverted';} $i++; ?>"></i>
                                     </a>
@@ -151,7 +347,19 @@
                                 }else{
                                     echo "activite-".$publication->activity->id;
                                 }
-                            ?>" class="<?php if($i%2){echo 'timeline-inverted';} ?> publicationJS">
+                            ?>" class="
+                                <?php 
+                                       if($i%2){echo 'timeline-inverted';} 
+                                       if(!is_null($publication->activity)) 
+                                       { 
+                                           echo " element-item sport".$publication->activity->sport->id; 
+                                       } 
+                                       
+                                       else
+                                       {
+                                           echo " element-item ";
+                                       }
+                                ?> publicationJS">
                             <div class="timeline-badge primary">
                                 <a href="#"><i rel="tooltip" title="{{ $publication->date_start }}" class="glyphicon glyphicon-record <?php if($i%2){echo 'timeline-inverted';} $i++; ?>"></i>
                                 </a>
@@ -440,4 +648,50 @@
     <script src="{{ asset('asset/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset('asset/js/plugins/selectize.js/standalone/selectize.min.js') }}"></script>
     <script src="{{ asset('asset/js/scroll.js') }}"></script>
+    <script src="{{ asset('asset/js/isotope.pkgd.min.js') }}"></script>
+
+
+    <script>
+
+// init Isotope
+        var $grid = $('.grid').isotope({
+          itemSelector: '.element-item',
+          layoutMode: 'fitRows'
+        });
+        // bind filter button click
+        $('.filters-button-group').on( 'click', 'button', function() {
+          var filterValue = $( this ).attr('data-filter');
+          // use filterFn if matches value
+          $grid.isotope({ filter: filterValue });
+        });
+        // change is-checked class on buttons
+        $('.button-group').each( function( i, buttonGroup ) {
+          var $buttonGroup = $( buttonGroup );
+          $buttonGroup.on( 'click', 'button', function() {
+            $buttonGroup.find('.is-checked').removeClass('is-checked');
+            $( this ).addClass('is-checked');
+          });
+        });
+        
+        /*        // bind filter button click
+        $('.filters-button-group').on( 'click', 'button', function() {
+          var filterValue = $( this ).attr('data-filter');
+          // use filterFn if matches value
+            $('.element-item').each( function( i, buttonGroup ) {
+                if(filterValue == "*")
+                {
+                    $(this).show();
+                }
+                else if(!($(this).hasClass(filterValue)))
+                {
+                    $(this).hide();
+                }
+                else
+                {
+                    $(this).show();
+                }
+            });
+          
+        });*/
+    </script>
 @endsection

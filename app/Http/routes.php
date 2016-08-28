@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\File;
     Route::model('notification', 'App\Notifications');
     Route::model('newsletter', 'App\Newsletter');
     Route::model('star', 'App\UsersDemandsStars');
+    Route::model('product', 'App\Product');
 
 
 
@@ -50,12 +51,13 @@ use Illuminate\Support\Facades\File;
             Route::get('/user/{user}/changeStatus', ['as' => 'admin.user.change', 'uses' => 'Admin\UserController@changeStatus']);
             Route::get('/user/{user}/blocked', ['as' => 'admin.user.blocked', 'uses' => 'Admin\UserController@blocked']);
             Route::get('/user/{user}/authorize', ['as' => 'admin.user.authorize', 'uses' => 'Admin\UserController@authorize']);
-            Route::resource('sport', 'Admin\SportController');
+            Route::resource('sport', 'Admin\SportController',['except' => ['update']]);
             Route::resource('newsletter', 'Admin\NewsletterController',['except' => ['update']]);
             Route::post('/newsletter/{newsletter}/update', ['as' => 'admin.newsletter.update', 'uses' => 'Admin\NewsletterController@update']);
             Route::get('/newsletter/{newsletter}/delete',  ['as' => 'admin.newsletter.delete', 'uses' => 'Admin\NewsletterController@destroy']);
-            Route::get('/newsletter/{newsletter}/send',  ['as' => 'admin.newsletter.send', 'uses' => 'Admin\NewsletterController@send']);
-            Route::get('/sport/{sport}/destroy',  ['as' => 'admin.sport.delete', 'uses' => 'Admin\SportController@destroy']);
+            Route::post('/newsletter/send',  ['as' => 'admin.newsletter.send', 'uses' => 'Admin\NewsletterController@send']);
+            Route::get('/sport/{sport}/destroy',  ['as' => 'admin.sport.delete', 'uses' => 'Admin\SportController@destroy']); 
+            Route::post('/sport/update/{idsport}',  ['as' => 'admin.sport.update', 'uses' => 'Admin\SportController@update']);
             Route::resource('publication', 'Admin\PublicationController',['except' => ['update']]);
             Route::post('/publication/{publication}/update', ['as' => 'admin.publication.update', 'uses' => 'Admin\PublicationController@update']);
             Route::get('/comment/{comment}/destroy',  ['as' => 'admin.comment.destroy', 'uses' => 'Admin\CommentController@destroy']);
@@ -82,13 +84,24 @@ use Illuminate\Support\Facades\File;
         Route::post('/publication/loadAll', 'Front\PublicationController@loadAll');
 
         //Profil
-        Route::resource('photo', 'PhotoController');
+       // Route::resource('photo', 'PhotoController');
         Route::resource('user', 'UserController',['except' => ['update']]);
         Route::post('/user/demandeStar', ['as' => 'user.star', 'uses' => 'UserController@demandeStar']);
         Route::post('/user/demandeStarRemove', ['as' => 'user.star', 'uses' => 'UserController@demandeStarRemove']);
         Route::post('/user/{user}/update', ['as' => 'user.update', 'uses' => 'UserController@update']);
+        Route::post('/user/{user}/annonce_add', ['as' => 'user.annonce_add', 'uses' => 'UserController@annonce_add']);
+        Route::get('/user/{user}/annonce', ['as' => 'user.annonce', 'uses' => 'UserController@annonce']);
         Route::post('/product/addAjax','ProductController@addAjax');
         Route::post('/picture/addAjax','PictureController@addAjax');
+        
+        
+       // Route::resource('photo', 'PhotoController');
+        Route::resource('product', 'ProductController',['only' => ['show','edit']]);
+        Route::post('/product/{id}/update', ['as' => 'product.update', 'uses' => 'ProductController@update']);
+        Route::get('/product/{product}/destroy', ['as' => 'product.destroy', 'uses' => 'ProductController@destroy']);
+        Route::get('/product/{product}/comparator', ['as' => 'product.comparator', 'uses' => 'ProductController@comparator']);
+        Route::get('/product/{id}/compare', ['as' => 'product.compare', 'uses' => 'ProductController@compare']);
+        Route::get('/product/{id}/flush', ['as' => 'product.flush', 'uses' => 'ProductController@flush']);
 
 
         //Activité
@@ -111,6 +124,7 @@ use Illuminate\Support\Facades\File;
         Route::post('/association/{association}/act', ['as' => 'association.act.store', 'uses' => 'Front\AssociationController@storeact']);
         Route::get('/association/{association}/join', ['as' => 'association.join', 'uses' => 'Front\AssociationController@join']);
         Route::get('/association/{association}/quit', ['as' => 'association.quit', 'uses' => 'Front\AssociationController@quit']);
+        Route::post('/association/{association}/msg', ['as' => 'association.msg', 'uses' => 'Front\AssociationController@msg']);
         Route::post('/association/{userassociation}/promouvoir', ['as' => 'association.promot', 'uses' => 'Front\AssociationController@promouvoir']);
         Route::post('/association/{userassociation}/destituer', ['as' => 'association.dest', 'uses' => 'Front\AssociationController@destituer']);
         Route::post('/association/search', ['as' => 'association.search', 'uses' => 'Front\AssociationController@search']);

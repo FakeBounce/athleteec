@@ -29,6 +29,12 @@ html {
 body {
   margin: 0;
 }
+
+.modal-body {
+    overflow-y: scroll;
+    max-height: 800px;
+}
+
 article,
 aside,
 details,

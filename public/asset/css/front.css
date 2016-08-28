@@ -43,6 +43,30 @@
     display: none;
 }
 
+.category_select {
+    cursor : pointer;
+    margin-right:10px;
+    margin-left:0px;
+    margin-top:5px!important;
+}
+
+#prod_input {
+    margin-bottom:10px;
+    margin-top:10px;
+}
+
+.brand_select {
+    cursor : pointer;
+    margin-right:10px;
+    margin-left:0px;
+    margin-top:5px!important;
+}
+
+#brand_input {
+    margin-bottom:10px;
+    margin-top:10px;
+}
+
 .moreComment
 {
     text-align: right;
@@ -245,6 +269,15 @@
 .checkbox-correct{
     text-align: center;
     padding-top: 15px;
+    cursor:pointer;
+}
+
+.social-sidebar {
+    text-align: center;
+}
+
+.social-sidebar ul {
+    padding:0px;
 }
 
 .post_picture_video img{
@@ -260,6 +293,7 @@
 
 .blanc{
     color: #fff;
+    text-align: center;
 }
 
 .blanc:hover{

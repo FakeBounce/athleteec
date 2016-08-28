@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Comment;
-use App\HelperPublication;
+use App\Association;
+use App\Event;
 use App\Http\Controllers\Controller;
 use App\Publication;
 use App\Sport;
-use Illuminate\Http\Response;
+use App\UsersSports;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use Illuminate\Support\Facades\Auth;
 
 class SportController extends Controller
 {
@@ -120,7 +118,12 @@ class SportController extends Controller
      */
     public function edit($id)
     {
-        //
+        $sport = Sport::where('id', '=', $id)
+            ->get();
+
+
+
+        return view('admin.sport.edit', ['sport' => $sport[0]]);
     }
 
     /**
@@ -130,9 +133,40 @@ class SportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sport $sport)
+    public function update($id)
     {
-        //
+        $nameSport = Input::get('name');
+        if($nameSport == ''){
+            return Redirect::route('admin.sport.show', ['sport' => $id])->with('message','Impossible de mettre à jour! Le nom du sport doit être définit');
+        }
+
+        if (Input::hasFile('picture')) {
+
+            $extension = Input::file('picture')->getClientOriginalExtension();
+            if($extension != 'jpg' || $extension != 'png' || $extension != 'jpeg'){
+                return Redirect::route('admin.sport.show', ['sport' => $id])->with('message','Le format autorisé pour les fichiers est jpg, jpeg et png!');
+            }
+
+            $imageName = date('YmdHis') . '_sport.' . $extension;
+
+            Input::file('picture')->move(
+                public_path() . '/images/icons/', $imageName
+            );
+            $imageName = '/images/icons/' . $imageName;
+
+            Sport::where('id', '=', $id)
+                ->update([
+                    'name' => $nameSport,
+                    'icon' => $imageName,
+                ]);
+        } else {
+
+            Sport::where('id', '=', $id)
+                ->update([
+                    'name' => $nameSport,
+                ]);
+        }
+        return Redirect::route('admin.sport.show', ['sport' => $id])->with('success','Le sport a été modifié avec succès!');
     }
 
 
@@ -144,13 +178,32 @@ class SportController extends Controller
      */
     public function destroy(Sport $sport)
     {
-        $usersSports = $sport->userSport;
-        foreach ($usersSports as $us){
-            $us->delete();
-        }
-        $sport->delete();
+        $publicationsport = Publication::where('activity_id', '=', $sport->id)
+            ->count();
 
-        return Redirect::route('admin.sport.index');
+        $eventsport = Event::where('sport_id', '=', $sport->id)
+            ->count();
+
+        $assosport = Association::where('sport_id', '=', $sport->id)
+            ->count();
+
+        $usersSports = UsersSports::where('sport_id', '=', $sport->id)
+            ->count();
+
+        $liaisons = $publicationsport + $eventsport + $assosport + $usersSports;
+
+        if($liaisons > 0){
+            return Redirect::route('admin.sport.show', [ 'sport' => $sport])->with('message','Des liaisons sont existantes! Impossible de supprimer ce sport!');
+        } else {
+            $usersSports = $sport->userSport;
+            foreach ($usersSports as $us){
+                $us->delete();
+            }
+            $sport->delete();
+
+            return Redirect::route('admin.sport.index');
+        }
+
     }
 
 

@@ -14,30 +14,18 @@
                         <h4>Informations</h4>
                     </div>
                     <div class="panel-body">
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="name">Nom</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">{{ $sport->name }}</p>
                             </div>
-                        @endif
-                        <form class="form-horizontal">
-                            {{csrf_field()}}
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="name">Nom</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">{{ $sport->name }}</p>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="existicon" class="col-sm-2 control-label">Icon :</label>
+                            <div class="col-sm-10">
+                                <img src="{{ asset("../images/icons/".$sport->icon) }}" alt="{{ $sport->name }}" class="img-responsive" width="45px" height="45px">
                             </div>
-                            <div class="form-group">
-                                <label for="existicon" class="col-sm-2 control-label">Icon :</label>
-                                <div class="col-sm-10">
-                                    <img src="{{ asset("../images/icons/".$sport->icon) }}" alt="{{ $sport->name }}" class="img-responsive" width="45px" height="45px">
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,8 +35,19 @@
                         <h4>Actions</h4>
                     </div>
                     <div class="panel-body">
+                        @if (session('message'))
+                            <div class="alert alert-danger">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                        <a href="{{ route('admin.sport.index') }}" class="btn btn-default">Retour</a>
                         <a href="{{ route('admin.sport.edit', ['sport' => $sport->id]) }}" class="btn btn-default">Modifier</a>
-                        <a href="{{ route('admin.sport.delete', ['sport' => $sport->id]) }}" class="btn btn-default">Supprimer</a>
+                        <a href="{{ route('admin.sport.delete', ['sport' => $sport->id]) }}" class="btn btn-danger">Supprimer</a>
                     </div>
                 </div>
             </div>

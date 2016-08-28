@@ -116,6 +116,7 @@ $(document).ready(function() {
             success: function(data) {
                 if(data['success'] == true)
                 {
+                    console.log(data);
                     $('#modal-product').modal('hide');
 
                     $productname = data['productname'];
@@ -134,7 +135,7 @@ $(document).ready(function() {
                                 "<div class='col-md-1'>" +
                                     "<div class='equipement-cadre'>" +
                                         "<div class='equipement-box'>"+
-                                            "<img src='http://localhost/Athleteecs/public/images/"+$picture+"'"+"alt='Avatar' class='img-thumbnail img-responsive'>"+
+                                            "<img src='http://localhost/images"+$picture+"'"+"alt='Avatar' class='img-thumbnail img-responsive'>"+
                                         "</div>"+
                                     "</div>"+
                                 "</div>"+
@@ -152,6 +153,10 @@ $(document).ready(function() {
                     "</div>"+
                     "</div>");
                 }
+            },
+            error:function(jqXHR)
+            {
+                console.log(jqXHR.responseText);
             }
         });
     });
@@ -435,6 +440,43 @@ $(document).ready(function() {
         if(id){
             $.ajax({
                 url: '/association/'+ id +'/destituer',
+                type: 'post',
+                success: function(data) {
+                    if(data['success'] == true) {
+                        var promouvoir = event.next();
+                        event.css('display', 'none');
+                        promouvoir.css('display', 'inline-block');
+                    }
+                }
+            });
+        }
+    });
+
+    $('#epromouvoir').click(function(e){
+        var id = $(this).data("text");
+        var event = $(this);
+        if(id){
+            $.ajax({
+                url: '/event/'+ id +'/promouvoir',
+                type: 'post',
+                success: function(data) {
+                    if(data['success'] == true)
+                    {
+                        var destituer = event.prev();
+                        event.css('display', 'none');
+                        destituer.css('display', 'inline-block');
+                    }
+                }
+            });
+        }
+    });
+
+    $('#edestituer').click(function(e){
+        var id = $(this).data("text");
+        var event = $(this);
+        if(id){
+            $.ajax({
+                url: '/event/'+ id +'/destituer',
                 type: 'post',
                 success: function(data) {
                     if(data['success'] == true) {

@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => "esgi.athleteec@gmail.com", 'name' => "Athleteec"],
+    'from' => ['address' => "benjamin.romanelli@neuf.fr", 'name' => "Athleteec"],
 
     /*
     |--------------------------------------------------------------------------

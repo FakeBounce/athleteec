@@ -25,6 +25,7 @@ class IndexController extends Controller
         $sports = Sport::all();
         $user = Auth::user();
         $arrayFriends = array();
+        $arrayStars = array();
         $arrayFriends[] = $user->id;
 
         foreach($user->friends as $friend){

@@ -376,11 +376,15 @@ class ProductController extends Controller
     public function comparator(Product $product)
     {
         $produits = session()->get('produits');
-        if($produits[0]['category_id'] == $product->category_id)
+        if(!empty($produits[0]))
         {
-            array_push($produits,$product);
-            session()->set('produits', $produits);
-        return Redirect::to('/product/1/compare')->with('message', 'Les produits doivent être de la même catégorie.');
+            if($produits[0]['category_id'] == $product->category_id)
+            {
+                array_push($produits,$product);
+                session()->set('produits', $produits);
+            return Redirect::to('/product/1/compare')->with('message', 'Les produits doivent être de la même catégorie.');
+            }
+            
         }
         return Redirect::to('/product/1/compare');
     }

@@ -5,8 +5,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateTableUsersNotifications extends Migration
 {
-class CreateTableUsersNotifications extends Migration
-{
    /**
     * Run the migrations.
     *

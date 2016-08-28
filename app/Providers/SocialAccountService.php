@@ -129,8 +129,11 @@ class SocialAccountService
     public function createUserGoogle(ProviderUser $user){
         $password = Str::random(10);
         $sexe = "Femme";
-        if($user->user['gender'] == 'male'){
-            $sexe = "Homme";
+        if(!empty($user->user['gender']))
+        {
+            if($user->user['gender'] == 'male'){
+                $sexe = "Homme";
+            }
         }
         $email = "";
         if(!is_null($user->getEmail())){

@@ -38,6 +38,9 @@ use Illuminate\Support\Facades\File;
     Route::get('/login/redirect/{provider}', 'SocialAuthController@redirect');
     Route::get('/login/callback/{provider}', 'SocialAuthController@callback');
 
+    Route::get('{provider}/authorize', 'Auth\AuthController@authorize');
+    Route::get('{provider}/login', 'Auth\AuthController@login');
+
     Route::group(['middleware' => 'auth'], function () {
 
         Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function () {

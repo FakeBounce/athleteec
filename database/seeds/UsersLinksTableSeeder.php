@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class UsersEquipsSports extends Seeder
+class UsersLinksTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,24 +11,44 @@ class UsersEquipsSports extends Seeder
      */
     public function run()
     {
-        DB::table('users_equips_sports')->insert([
+        DB::table('users_links')->insert([
             'user_id' => '1',
-            'product_id' => '1',
-            'sport_id' => '1',
+            'userL_id' => '2',
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now()
         ]);
-        DB::table('users_equips_sports')->insert([
+
+        DB::table('users_links')->insert([
             'user_id' => '1',
-            'product_id' => '2',
-            'sport_id' => '1',
+            'userL_id' => '3',
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now()
         ]);
-        DB::table('users_equips_sports')->insert([
-            'user_id' => '1',
-            'product_id' => '3',
-            'sport_id' => '1',
+        
+        DB::table('users_links')->insert([
+            'user_id' => '2',
+            'userL_id' => '1',
+            'created_at' => Carbon\Carbon::now(),
+            'updated_at' => Carbon\Carbon::now()
+        ]);
+
+        DB::table('users_links')->insert([
+            'user_id' => '3',
+            'userL_id' => '1',
+            'created_at' => Carbon\Carbon::now(),
+            'updated_at' => Carbon\Carbon::now()
+        ]);
+
+        DB::table('users_links')->insert([
+            'user_id' => '2',
+            'userL_id' => '3',
+            'created_at' => Carbon\Carbon::now(),
+            'updated_at' => Carbon\Carbon::now()
+        ]);
+
+        DB::table('users_links')->insert([
+            'user_id' => '3',
+            'userL_id' => '2',
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now()
         ]);

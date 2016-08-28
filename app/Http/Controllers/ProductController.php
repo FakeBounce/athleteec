@@ -386,6 +386,12 @@ class ProductController extends Controller
             }
             
         }
+        else
+        {
+                array_push($produits,$product);
+                session()->set('produits', $produits);
+            
+        }
         return Redirect::to('/product/1/compare');
     }
     

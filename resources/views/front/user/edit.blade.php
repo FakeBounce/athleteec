@@ -211,7 +211,9 @@
                                                                         <a href="{{ route('product.show',['product' => $equipment]) }}" target="_blank">
                                                                             <dd>{{ $equipment->name }}</dd>
                                                                         </a>
+                                                                        <dd>{{ $equipment->category->name }}</dd>
                                                                         <dd>{{ $equipment->description }}</dd>
+                                                                        <dd>{{ $equipment->price }}€</dd>
                                                                     </div>
 
                                                                 </li>

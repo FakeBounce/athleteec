@@ -64,6 +64,8 @@ $user = Auth::user();
             <a href="{{ route('product.compare', ['id' => 1]) }}" class="lien-barre-user">Comparer les produits !</a><br>
             <a href="{{ route('product.flush', ['id' => 1]) }}" class="lien-barre-user">Vider le comparateur !</a><br>
             <span class="lien-barre-user">Ajouter un produit en cliquant sur le bouton <i class="fa fa-balance-scale" aria-hidden="true"></i></span><br>
+            Attention, seuls les produits de la même catégorie peuvent être ajoutés au comparateur !
+            
             @if($errors->any())
             <h4>{{$errors->first()}}</h4>
             @endif

@@ -104,6 +104,7 @@ use Illuminate\Support\Facades\File;
         Route::get('/product/{product}/destroy', ['as' => 'product.destroy', 'uses' => 'ProductController@destroy']);
         Route::get('/product/{product}/comparator', ['as' => 'product.comparator', 'uses' => 'ProductController@comparator']);
         Route::get('/product/{id}/compare', ['as' => 'product.compare', 'uses' => 'ProductController@compare']);
+        Route::get('/product/{product}/remove', ['as' => 'product.remove', 'uses' => 'ProductController@remove']);
         Route::get('/product/{id}/flush', ['as' => 'product.flush', 'uses' => 'ProductController@flush']);
 
 

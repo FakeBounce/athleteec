@@ -412,4 +412,20 @@ class ProductController extends Controller
         session()->set('produits', $test);
         return Redirect::to('/');
     }
+    
+    public function remove(Product $product)
+    {
+        $produits = session()->get('produits');
+        foreach($produits as $i=>$produit)
+        {
+            if($produit->id == $product->id)
+            {
+                unset($produits[$i]);
+                break;
+            }
+        }
+        $produits = array_values($produits);
+        session()->set('produits', $produits);
+        return Redirect::to('/product/1/compare');
+    }
 }

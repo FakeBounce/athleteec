@@ -38,9 +38,9 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Sport', 'users_equips_sports', 'sport_id', 'product_id');
     }
-    public function categorie()
+    public function category()
     {
-        return $this->belongsTo('App\Categorie');
+        return $this->belongsTo('App\Category');
     }
     public function carac_vals()
     {

@@ -2,6 +2,26 @@
     margin-bottom: 20px;
 }
 
+table.panel-foo {
+    border: 3px solid  #ddd;
+}
+
+tbody {
+    border: 3px solid #ddd;
+}
+
+tr {
+    border: 3px solid #ddd;
+}
+
+th {
+    border: 3px solid #ddd;
+}
+
+td {
+    border: 3px solid #ddd;
+}
+
 .timeline-2-cols .timeline-footer .comments .comment, .timeline-2-cols .timeline-footer .comments .comment-body {
     overflow: hidden;
     position:relative;

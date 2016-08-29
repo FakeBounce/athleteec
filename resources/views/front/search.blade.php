@@ -65,9 +65,26 @@
                                         <img class="imgonefriend" src="{{asset('images/'.$prod->picture)}}" alt="{{ $prod->name }}" width="100px" height="100px">
                                     </span>
                                     <h4>{{ $prod->name }}</h4>
+                                    {{ $prod->category->name }}<br>
                                     {{ $prod->description }}<br>
                                     {{ $prod->price }}€<br>
+                                    
+                                    <?php $done = 0; ?>
+                                    @if(!empty(Session::get('produits')))
+                                        @if(Session::get('produits')[0]['category_id'] == $prod->category->id)
+                                            @foreach(Session::get('produits') as $produit)
+                                                @if($produit['id'] == $prod->id)
+                                                    <?php $done = 1; ?>
+                                                @endif
+                                            @endforeach
+                                            @if($done == 0)
                                                 <a href=" {{ route('product.comparator',['product' => $prod]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                            @endif
+                                        @endif
+                                    @else
+                                        <a href=" {{ route('product.comparator',['product' => $prod]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                    
+                                    @endif
                                 </div>
                             </a>
                         </div>

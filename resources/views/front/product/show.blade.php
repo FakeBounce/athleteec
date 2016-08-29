@@ -119,8 +119,22 @@
                                             <div class="image-upload">
                                                 <label for="file-input-modal">
                                                 </label>
-                                            </div>
-                                            <a href=" {{ route('product.comparator',['product' => $product]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                            </div>                                    <?php $done = 0; ?>
+                                    @if(!empty(Session::get('produits')))
+                                        @if(Session::get('produits')[0]['category_id'] == $product->category->id)
+                                            @foreach(Session::get('produits') as $produit)
+                                                @if($produit['id'] == $product->id)
+                                                    <?php $done = 1; ?>
+                                                @endif
+                                            @endforeach
+                                            @if($done == 0)
+                                                <a href=" {{ route('product.comparator',['product' => $product]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                            @endif
+                                        @endif
+                                    @else
+                                        <a href=" {{ route('product.comparator',['product' => $product]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                    
+                                    @endif
                                             @if(Auth::user()->id != $product->user_id)
                                                 <a href=" {{ route('product.destroy',['product' => $product]) }}"> <button type="submit" class="btn btn-primary pull-right" >Supprimer</button></a> 
                                                 <a href=" {{ route('product.edit',['id' => $product->id]) }}"><button type="submit" class="btn btn-primary pull-right" >Modifier</button></a>&nbsp;

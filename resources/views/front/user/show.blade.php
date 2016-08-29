@@ -329,8 +329,24 @@
                                                     <a href="{{ route('product.show',['product' => $equipment]) }}" target="_blank">
                                                         <dd>{{ $equipment->name }}</dd>
                                                     </a>
+                                                    <dd>{{ $equipment->category->name }}</dd>
                                                     <dd>{{ $equipment->description }}</dd>
-                                                <a href=" {{ route('product.comparator',['product' => $equipment]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                                    
+                                                    @if(!empty(Session::get('produits')))
+                                                        @if(Session::get('produits')[0]['category_id'] == $equipment->category->id)
+                                                            @foreach(Session::get('produits') as $produit)
+                                                                @if($produit['id'] == $equipment->id)
+                                                                    <?php $done = 1; ?>
+                                                                @endif
+                                                            @endforeach
+                                                            @if($done == 0)
+                                                                <a href=" {{ route('product.comparator',['product' => $equipment]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                                            @endif
+                                                        @endif
+                                                    @else
+                                                        <a href=" {{ route('product.comparator',['product' => $equipment]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+
+                                                    @endif
                                                 </div>
                                             </div>
                                         @endforeach
@@ -353,8 +369,25 @@
                                                         <a href="{{ route('product.show',['id' => $equipment->id]) }}">
                                                             <dd>{{ $annonce->name }}</dd>
                                                         </a>
+                                                        <dd>{{ $annonce->category->name }}</dd>
                                                         <dd>{{ $annonce->description }}</dd>
                                                         <dd>{{ $annonce->price }}€</dd>
+
+                                                        @if(!empty(Session::get('produits')))
+                                                            @if(Session::get('produits')[0]['category_id'] == $annonce->category->id)
+                                                                @foreach(Session::get('produits') as $produit)
+                                                                    @if($produit['id'] == $annonce->id)
+                                                                        <?php $done = 1; ?>
+                                                                    @endif
+                                                                @endforeach
+                                                                @if($done == 0)
+                                                                    <a href=" {{ route('product.comparator',['product' => $annonce]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+                                                                @endif
+                                                            @endif
+                                                        @else
+                                                            <a href=" {{ route('product.comparator',['product' => $annonce]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
+
+                                                        @endif
                                                     </div>
                                                 </div>
                                             @endif

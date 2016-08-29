@@ -46,7 +46,7 @@
                                                         {
                                                     ?>
                                                     <td>
-                                                        {{$produits[$i]['name']}}
+                                                        <a href="{{ route('product.remove',['id' => $produits[$i]]) }}"><i class="fa fa-minus-circle" aria-hidden="true"  style="cursor:pointer;"></i> {{$produits[$i]['name']}} </a>
                                                     </td>
                                                     <?php          
                                                         }
@@ -178,11 +178,25 @@
                                         
                                     </table>
                                 
-                                    <div class="form-actions panel-foo">
+                                    <div class="form-actions">
                                         <div class="btn-group" style="width:100%;">
                                             <div class="image-upload">
                                                 <label for="file-input-modal">
                                                 </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="panel panel-default col-xs-8 col-xs-offset-2">
+                                        <div class="conversation_div">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <h4 class="text-center">
+                                                        Vous n'avez pas encore de ajouter de produits. <br><br>
+                                                        Cliquez sur l'icône <button class="btn btn-primary" style="cursor:none;"><i class="fa fa-balance-scale" aria-hidden="true"></i></button> à côté d'un produit pour l'ajouter au comparateur !<br>
+                                                        Vous ne pouvez ajouter que des produits de la même catégorie !
+                                                    </h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

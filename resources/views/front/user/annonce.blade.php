@@ -111,8 +111,9 @@
                                                                             <a href="{{ $equipment->url }}">
                                                                                 <dd>{{ $equipment->name }}</dd>
                                                                             </a>
+                                                                            <dd>{{ $equipment->category->name }}</dd>
                                                                             <dd>{{ $equipment->description }}</dd>
-                                                                            <dd>{{ $equipment->price }}</dd>
+                                                                            <dd>{{ $equipment->price }}€</dd>
                                                                         </div>
                                                                         @if($user->id == Auth::user()->id)
                                                                         <form class="form" method="POST" enctype="multipart/form-data" action="{{ route('user.annonce_add',['user' => $user]) }}">
@@ -164,7 +165,9 @@
                                                                             <a href="{{ $equipment->url }}">
                                                                                 <dd>{{ $equipment->name }}</dd>
                                                                             </a>
+                                                                            <dd>{{ $equipment->category->name }}</dd>
                                                                             <dd>{{ $equipment->description }}</dd>
+                                                                            <dd>{{ $equipment->price }}€</dd>
                                                                         </div>
 
                                                                         @if($user->id == Auth::user()->id)

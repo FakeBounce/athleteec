@@ -119,12 +119,13 @@ $(document).ready(function() {
                     console.log(data);
                     $('#modal-product').modal('hide');
 
-                    $productname = data['productname'];
-                    $picture = data['picture'];
-                    $url = data['url'];
-                    $price = data['price'];
-                    $description = data['description'];
-                    $productId = data['productId']
+                    var $productname = data['productname'];
+                    var $picture = data['picture'];
+                    var $category = data['category'];
+                    var $url = data['url'];
+                    var $price = data['price'];
+                    var $description = data['description'];
+                    var $productId = data['productId']
 
                     var parent = $('.tab-pane.active.equipement').first();
                     var div = parent.children().first() ;
@@ -143,6 +144,7 @@ $(document).ready(function() {
                                     "<a href='" + $url + "'>"+
                                         "<dd>" + $productname + "</dd>"+
                                     "</a>"+
+                                    "<dd>" + $category + "</dd>"+
                                     "<dd>" + $description + "</dd>"+
                                 "</div>"+
                                 "<div class='col-md-1 checkbox-correct'>"+

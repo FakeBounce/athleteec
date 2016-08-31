@@ -425,6 +425,14 @@ class EventController extends Controller
                    'accepter' => 1,
                    'afficher' => true]);
            }
+           
+           UsersDemandsEvents::firstOrCreate([
+                'user_id' => $userC->id,
+                'event_id' =>  $event->id,
+                'is_authorised' => 1
+                ]);
+
+           
            UsersEvents::create(array(
               'user_id' => $userC->id,
                'event_id' => $event->id,

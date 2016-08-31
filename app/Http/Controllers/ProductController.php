@@ -147,13 +147,12 @@ class ProductController extends Controller
             return \Response::json(array(
                 'success' => true,
                 'productname' =>  $data['productname'],
+                'category' => $category->name,
                 'description' => $data['description'],
                 'price' => $data['price'],
                 'url' => $data['url'],
                 'productId' => $product->id,
-                'picture' => $imageName,
-                'test' => $data['new_carac_val'],
-                'test2' => $data['new_carac_name']
+                'picture' => $imageName
             ));
         }
     }

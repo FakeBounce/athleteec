@@ -47,7 +47,7 @@
                                     <div class="tab-pane fade active in" id="tab_home">
                                         <form role="form" style="position: relative" action="{{ route("publication.store")}}" method="post" enctype="multipart/form-data">
                                             {{csrf_field()}}
-                                        <textarea id="user-post" name="message_status" placeholder="Partage ton statut" rows="3" class="form-control" style="resize: none;border: none;box-shadow: none" required></textarea>
+                                        <textarea id="user-post" name="message_status" placeholder="Partage ton statut" rows="3" class="form-control" style="resize: none;border: none;box-shadow: none"></textarea>
                                         <div class="form-actions panel-foo">
                                             <div class="btn-group">
                                                 <div class="image-upload">

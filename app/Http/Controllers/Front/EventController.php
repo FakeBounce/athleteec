@@ -70,6 +70,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        dd($data);
         $data = $request->all();
         $user = Auth::user();
         $rules = [
@@ -84,7 +85,7 @@ class EventController extends Controller
         $messages = [
             'name.required'    => 'Le nom de l\'event est requis',
             'description.required'    => 'Description requise',
-            'picture.required' => 'Image requise',
+            'picture.required' => 'Image manquante ou trop lourde',
             'picture.mimes'      => 'Le format de l\'image n\'est pas pris en charge (jpeg,png,jpg)',
             'lattitude.required'      => 'Indiquer une adresse',
             'sport.required' => 'Choisir un sport',
@@ -250,7 +251,7 @@ class EventController extends Controller
                    'action_id' => $event->id,
                    'action_name' => $event->name,
                    'notification' => 'events',
-                   'accepter' => 1,
+                   'accepter' => 0,
                    'afficher' => true]);
                     
                     

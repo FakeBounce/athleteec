@@ -111,7 +111,7 @@
                                     <div class="col-md-12 padding-bottom-correct">
                                         <label for="url" class="col-md-2 control-label">Lien vers l'équipement</label>
                                         <div class="col-md-10">
-                                            <a href="{{ $product->url }}">Lien vers l'équipement</a>
+                                            <a href="{{ $product->url }}">{{ $product->url }}</a>
                                         </div>
                                     </div>
                                     <div class="form-actions panel-foo">

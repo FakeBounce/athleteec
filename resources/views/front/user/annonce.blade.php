@@ -52,7 +52,7 @@
                                             <div>
                                                 <a href="{{ route('front.friends.destroy', ['friend' => $user->id]) }}" class="btn btn-block btn-success">Retirer de la liste d'amis</a>
                                             </div>
-                                        @else
+                                        @elseif(Auth::user()->id != $user->id)
                                             <div>
                                                 <a href="{{ route('front.friends.add', ['friend' => $user->id]) }}" class="btn btn-block btn-success">Ajouter un ami</a>
                                             </div>

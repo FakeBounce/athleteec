@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Newsletter;
 use App\UsersNewsletters;
 use App\Sport;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -92,6 +93,7 @@ class NewsletterController extends Controller
             if(empty($data['sport']))
             {
                 $users = UsersNewsletters::where('active', '=', 1)->get();
+                $newsletter = Newsletter::where('id', '=', $data['id'])->get()->first();
                 foreach($users as $user){
                     $this->mailer->send('emails.newsletter', ['text' => $newsletter->text ] ,function (Message $m) use ($user,$newsletter) {
                         $m->from('esgi.athleteec@gmail.com', 'Athleteec');
@@ -106,15 +108,17 @@ class NewsletterController extends Controller
             else
             {   
                 $users = UsersNewsletters::where('active', '=', 1)->get();
+                $newsletter = Newsletter::where('id', '=', $data['id'])->get()->first();
                 foreach($users as $user){
+                $r_user = User::where('email', '=', $user->email)->get()->first();
                     $is_ok = 0;
                     foreach($data['sport'] as $sport)
                     {
-                        if(!empty($user->sports))
-                        {                        
-                            foreach($user->sports as $user_sport)
+                        if(!empty($r_user->sports))
+                        {                  
+                            foreach($r_user->sports as $user_sport)
                             {
-                                if($user_sport->id == $sport->id)
+                                if($user_sport->id == $sport)
                                 {
                                     $is_ok = 1;
                                     break;
@@ -127,7 +131,7 @@ class NewsletterController extends Controller
                         }
                     }
                     if($is_ok)
-                    {                    
+                    {           
                         $this->mailer->send('emails.newsletter', ['text' => $newsletter->text ] ,function (Message $m) use ($user,$newsletter) {
                         $m->from('esgi.athleteec@gmail.com', 'Athleteec');
                         $m->to($user->email)->subject($newsletter->objet);

@@ -300,38 +300,6 @@
                     
                     <?php $i = 0;$y = 0; ?>
                     @for($z =0; $z < count($publications);$z++)
-                        @if($y < count($events) && $i % 3 == 0)
-                            <?php
-                                $event = $events[$y];
-                                $y++;
-                                $z--;
-                            ?>
-                            <li class="<?php if($i%2){echo 'timeline-inverted';} if(!is_null($publication->activity)) 
-                                       { 
-                                           echo " element-item sport".$publication->activity->sport->id; 
-                                       } 
-                                       
-                                       else
-                                       {
-                                           echo " element-item ";
-                                       } 
-                                       ?>">
-                                <div class="timeline-badge primary">
-                                    <a href="#"><i rel="tooltip" title="{{ $event->created_at }}" class="glyphicon glyphicon-record <?php if($i%2){echo 'timeline-inverted';} $i++; ?>"></i>
-                                    </a>
-                                </div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-body">
-                                        <div class="post_picture_video">
-                                            <img src="{{ asset($event->picture) }}" alt="" class="img-responsive">
-                                        </div>
-                                        <div class="post_activity_msg">
-                                            {{$event->started_at}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        @else
                         <?php
                             $publication = $publications[$z];
                         ?>
@@ -477,7 +445,6 @@
                                 </div>
                             </div>
                         </li>
-                        @endif
                     @endfor
                     <li style="float: none;" class="clearfix"></li>
                 </ul>

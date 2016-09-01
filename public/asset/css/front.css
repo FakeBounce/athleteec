@@ -51,6 +51,10 @@ table.panel-foo {
     margin-top: 30px;
     margin-bottom: 30px;
 }
+.user-profile .timeline-2-cols > li {
+    width: 100%!important;
+}
+
 .timeline-2-cols > li {
     margin-bottom: 20px;
     position: relative!important;

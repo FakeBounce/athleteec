@@ -42,13 +42,6 @@ class IndexController extends Controller
         foreach($user->sports as $sport){
             $arraySports[] = $sport->id;
         }
-
-        $events = Event::whereIn('sport_id', $arraySports )
-            ->where('private', '=', '0')
-            ->where('started_at', '>=', Carbon::today()->toDateString())
-            ->orderBy('started_at', 'DESC')
-            ->take(3)
-            ->get();
         
         $stars = User::whereIn('id', $arrayFriends)
             ->where('star','1')
@@ -66,12 +59,12 @@ class IndexController extends Controller
             ->take(1)
             ->get();
 
-            return view('front.index', ["sports" => $sports, "publications" => $posts, "events" => $events, "star_pub" => $star_posts->first()]);
+            return view('front.index', ["sports" => $sports, "publications" => $posts, "star_pub" => $star_posts->first()]);
             
         }
         else
         {
-            return view('front.index', ["sports" => $sports, "publications" => $posts, "events" => $events]);
+            return view('front.index', ["sports" => $sports, "publications" => $posts]);
         }
     }
 

@@ -95,10 +95,12 @@
                 success:function(data) {
                     console.log('Success !');
                     $('.message_retour').html(data.message);
+		    $('.send_newsletter').remove();
                 },
                 error:function(jqXHR)
                 {
                     $('.message_retour').html("Une erreur s'est produite. Veuillez recharger la page et recommencer.");
+                    console.log(jqXHR.responseText);
                 }
             });
         });

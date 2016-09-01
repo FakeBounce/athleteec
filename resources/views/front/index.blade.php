@@ -126,15 +126,13 @@
                             <div class="timeline-panel">
                                 <div class="timeline-body">
                                     <div class="post_activity_msg">
-                                        <h1>Première utilisation?</h1>
-                                        <div>Postez une publication pour commencer l'aventure ATHLETEEC!</div>
+                                        <h1>C4est votre première fois?</h1>
+                                        <div>Postez votre humeur sportive pour commencer l'aventure ATHLETEEC!</div>
                                         <br>
-                                        <div>Les images et les vidéos youtube que vous publier se retrouvent dans votre <a href="{{ route('user.show',['user' => Auth::user()->id]) }}"><b>profil</b></a>.</div>
-                                        <br>
-                                        <div>Recherchez vos amis sportifs en utilisant la barre de recherche via leurs noms et prénoms ou bien par leur adresses mails.</div>
+                                        <div>Recherchez vos amis sportifs, des événements, des associations, des produits via la barre de recherche ! C'est simple et efficace..</div>
                                         <br>
                                         <br>
-                                        <div>Créer un <a href="{{ route('event.create') }}"><b>évènement</b></a> et une <a href="{{ route('association.create') }}"><b>association</b></a> n'a jamais été aussi simple!</div>
+                                        <div>Utilisez le menu à gauche pour créer vos propres événements, associations, discuter avec vos amis ou comparer des produits !</div>
                                     </div>
                                 </div>
                             </div>

@@ -118,9 +118,6 @@
 
                                                 @foreach($caracs as $carac)
                                                     @if($carac->category_id == $cat->id)
-                                                        <?php 
-                                                            $done = 0;
-                                                        ?>
                                                         <tr>
                                                             <th>
                                                                 {{$carac->name}}
@@ -128,9 +125,10 @@
                                                             <?php
                                                                 for($i = 0; $i<count($produits);$i++)
                                                                 {
+                                                                $done = 0;
                                                             ?>
                                                                     @foreach($carac_vals as $carac_val)
-                                                                        @if($carac_val->product_id == $produits[$i]['id'])
+                                                                        @if($carac_val->product_id == $produits[$i]['id'] && $carac_val->carac_id == $carac->id)
                                                                             <td>
                                                                                 {{$carac_val->value}}
                                                                                 <?php 

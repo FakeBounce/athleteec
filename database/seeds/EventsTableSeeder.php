@@ -23,6 +23,8 @@ class EventsTableSeeder extends Seeder
             'lattitude' => 48.8473142,
             'user_id' => 1,
             'sport_id' => 13,
+            'started_at' => Carbon\Carbon::now(),
+            'end_at' => Carbon\Carbon::now(),
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now()
         ]);
@@ -39,6 +41,8 @@ class EventsTableSeeder extends Seeder
             'lattitude' => 48.9244592,
             'user_id' => 1,
             'sport_id' => 1,
+            'started_at' => Carbon\Carbon::now(),
+            'end_at' => Carbon\Carbon::now(),
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now()
         ]);

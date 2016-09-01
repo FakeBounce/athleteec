@@ -151,9 +151,6 @@ $(document).ready(function() {
                                     "<dd>" + $category + "</dd>"+
                                     "<dd>" + $description + "</dd>"+
                                 "</div>"+
-                                "<div class='col-md-1 checkbox-correct'>"+
-                                    "<input type='checkbox' id='"+ $productId +"' name='equipement[]' value='" + $productId + "'>"+
-                                "</div>"+
                             "</li>"+
                         "</ul>"+
                     "</div>"+

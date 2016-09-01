@@ -242,7 +242,7 @@
                                 <h4>Ajouter un équipement</h4>
                             </div>
                             <div class="modal-body">
-                                <form id="submit-modal-product" enctype="multipart/form-data">
+                                <form id="submit-modal-product2" enctype="multipart/form-data">
 
                                     <div class="col-md-12 padding-bottom-correct">
                                         <label for="productname" class="col-md-2">Nom de l'équipement</label>

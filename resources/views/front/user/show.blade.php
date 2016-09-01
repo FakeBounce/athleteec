@@ -316,7 +316,7 @@
                                 <div class="tab-pane fade" id="equipement">
                                     <div class="row">
                                         @foreach($user->products as $equipment)
-                                            <?php $done = 1; ?>
+                                            <?php $done = 0; ?>
                                             <div class="col-xs-6 col-md-4 eq_row">
                                                 <div class="col-md-4">
                                                     <div class="equipement-cadre">
@@ -336,7 +336,7 @@
                                                     @if(!empty(Session::get('produits')))
                                                         @if(Session::get('produits')[0]['category_id'] == $equipment->category->id)
                                                             @foreach(Session::get('produits') as $produit)
-                                                                @if($produit['id'] == $equipment->id)
+                                                                @if($produit->id == $equipment->id)
                                                                     <?php $done = 1; ?>
                                                                 @endif
                                                             @endforeach

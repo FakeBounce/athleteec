@@ -386,7 +386,7 @@ $user = Auth::user();
                         '<small class="text-muted"><span class="fa fa-clock-o">&nbsp;</span>'+heureMessage+
                         '</small><strong class="pull-right primary-font username-chatbox">{{ $user->firstname }}</strong>'+
                         '</div>'+
-                        '<p class="chat_message">'+chat_msg[0]['message']+'</p></div></li>');
+                        '<p class="chat_message pull-right">'+chat_msg[0]['message']+'</p></div></li>');
                 $('.'+chat_class).parent().scrollTop($('.'+chat_class).parent().prop("scrollHeight"));
             }
             else
@@ -395,7 +395,7 @@ $user = Auth::user();
                 {
                     $('.'+chat_class).append('<li class="left clearfix"><span class="chat-avatar pull-left"><img src="'+chat_msg[0]['user']['picture']+'" alt="'+chat_msg[0]['user']['firstname']+
                             '" width="45px" height="45px"></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font username-chatbox-gauche">'+chat_msg[0]['user']['firstname']+
-                            '</strong><small class="pull-right text-muted"><span class="fa fa-clock-o">&nbsp;</span>'+heureMessage+'</small></div><p class="chat_message">'+chat_msg[0]['message']+'</p></div></li>');
+                            '</strong><small class="pull-right text-muted"><span class="fa fa-clock-o">&nbsp;</span>'+heureMessage+'</small></div><p class="chat_message pull-left">'+chat_msg[0]['message']+'</p></div></li>');
 
                     $('.'+chat_class).parent().scrollTop($('.'+chat_class).parent().prop("scrollHeight"));
                 }
@@ -595,7 +595,7 @@ $user = Auth::user();
                                 console.log(heureMessage);
                                 to_append = to_append + '<li class="left clearfix"><span class="chat-avatar pull-left"><img src="'+user['picture']+'" alt="'+user['firstname']+' '+user['lastname']+
                                         '" width="45px" height="45px"></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font username-chatbox-gauche">'+user['firstname']+
-                                        '</strong><small class="pull-right text-muted"><span class="fa fa-clock-o">&nbsp;</span>'+heureMessage+'</small></div><p class="chat_message">'+message['message']+'</p></div></li>';
+                                        '</strong><small class="pull-right text-muted"><span class="fa fa-clock-o">&nbsp;</span>'+heureMessage+'</small></div><p class="chat_message pull-left">'+message['message']+'</p></div></li>';
                             }
                         });
                     }

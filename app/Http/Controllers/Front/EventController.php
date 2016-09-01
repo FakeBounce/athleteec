@@ -70,7 +70,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        dd($data);
         $data = $request->all();
         $user = Auth::user();
         $rules = [

@@ -251,6 +251,20 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 padding-bottom-correct">
+                                        <label for="category" class="col-md-2">Catégorie</label>
+                                        <div class="col-md-10">
+                                            <input type="text" autocomplete="off" id="prod_category" class="form-control" name="category" placeholder="...">
+                                            <p id="prod_input"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 padding-bottom-correct">
+                                        <label for="brand" class="col-md-2">Marque de l'équipement</label>
+                                        <div class="col-md-10">
+                                            <input type="text" autocomplete="off" id="brand_category" class="form-control" name="brand" placeholder="...">
+                                            <p id="brand_input"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 padding-bottom-correct">
                                         <label for="description" class="col-md-2 control-label">Description</label>
                                         <div class="col-md-10">
                                             <input type="text" class="form-control" name="description" placeholder="...">
@@ -275,6 +289,7 @@
                                                     <div class="btn btn-default"><i class="fa fa-camera"></i></div>
                                                 </label>
                                                 <input id="file-input-modal" name="productpicture" type="file" accept="image/*"/>
+                                                <img id="preview2" class="picture-size" src="http://placehold.it/200x200" alt="your image" style="max-width:200px;max-height:200px;"/>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary pull-right" >Ajouter</button>
@@ -294,6 +309,150 @@
     <script>
         $('body').on('click','.checkbox-correct',function(){
             $(this).parent().submit();
+        });
+        
+        
+        var i = 0;
+        var caracs = new Array();
+        @foreach($caracs as $carac)
+            caracs[i] = {!! json_encode($carac) !!};
+            i++;
+        @endforeach
+        
+        $('body').on('keyup','#carac_category',function(e){
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            $("#carac_input").html('');
+            
+            if(val_length != 0)
+            {
+                $(caracs).each( function( i, carac ) {
+                    if (carac.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
+                        $("#carac_input").append('<span class="carac_select">'+carac.name+'</span> ');
+                    }
+                });
+            }
+        });
+    
+    
+        $('body').on('click','.carac_select',function(e){
+            $('#carac_category').val($(this).html());
+            $("#carac_input").html('');
+        });
+    
+    
+        var i = 0;
+        var categories = new Array();
+        @foreach($categories as $category)
+            categories[i] = {!! json_encode($category) !!};
+            i++;
+        @endforeach
+        
+        $('body').on('keyup','#prod_category',function(e){
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            $("#prod_input").html('');
+            
+            if(val_length != 0)
+            {
+                $(categories).each( function( i, category ) {
+                    if (category.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
+                        $("#prod_input").append('<span class="category_select btn btn-primary">'+category.name+'</span> ');
+                    }
+                });
+            }
+        });
+    
+        $('body').on('click','.category_select',function(e){
+            $('.carac').remove();
+            $('#prod_category').val($(this).html());
+            var cat = 0;
+            $(categories).each( function( i, category ) {
+                cat = 1;
+                if (category.name.toLowerCase() == $('#prod_category').val().toLowerCase()) {
+                    $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                    $(caracs).each( function( i, carac ) {
+                        if(carac.category_id == category.id)
+                        {
+                                $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..."></div></div>');
+                        }
+                    });
+                }
+            });
+                if(cat == 0)
+                {
+                                       
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                }
+            
+            $("#prod_input").html('');
+        });
+    
+    
+        $('body').on('click','.carac_add',function(e){
+            $(this).parent().remove();
+            $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+            $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">Valeur de la caractéristique</label><div class="col-md-10"><input type="text" class="form-control" name="new_carac_val[]" placeholder="42"></div></div>');
+            $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">Nom de la caractéristique</label><div class="col-md-10"><input type="text" class="form-control" name="new_carac_name[]" placeholder="Pointure, Taille, Longueur..."></div></div>');
+        });
+    
+        $('body').on('blur','#prod_category',function(e){
+            $('.carac').remove();
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            var cat = 0;
+            if(val_length != 0)
+            {
+                $(categories).each( function( i, category ) {
+                    cat = 1;
+                    if (category.name.toLowerCase() == val.toLowerCase()) {                    
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                        $(caracs).each( function( i, carac ) {
+                            if(carac.category_id == category.id)
+                            {
+                                    $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..."></div></div>');
+                            }
+                        });
+                        }
+                });
+                if(cat == 0)
+                {
+                                       
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                }
+            }
+        });
+    
+        var i = 0;
+        var brands = new Array();
+        @foreach($brands as $brand)
+            brands[i] = {!! json_encode($brand) !!};
+            i++;
+        @endforeach
+        
+        $('body').on('keyup','#brand_category',function(e){
+            var val_length = $(this).val().length;
+            var val = $(this).val();
+            var input = $(this);
+            $("#brand_input").html('');
+            
+            if(val_length != 0)
+            {
+                $(brands).each( function( i, brand ) {
+                    if (brand.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
+                        $("#brand_input").append('<span class="brand_select btn btn-primary">'+brand.name+'</span> ');
+                    }
+                });
+            }
+        });
+    
+    
+        $('body').on('click','.brand_select',function(e){
+            $('#brand_category').val($(this).html());
+            $("#brand_input").html('');
         });
     </script>
 @endsection

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Carac_val extends Model
 {
-    protected $table = 'Carac_vals';
+    protected $table = 'carac_vals';
     /**
      * The attributes that are mass assignable.
      *

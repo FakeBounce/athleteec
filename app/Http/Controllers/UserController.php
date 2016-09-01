@@ -110,7 +110,33 @@ class UserController extends Controller
 
     public function annonce(User $user)
     {        
-        return view('front.user.annonce',['user' => $user,'equipements' => $user->products]);
+
+            $userSports = $user->sports;
+            $arraySport = [];
+
+            foreach($userSports as $us){
+                $arraySport[] = $us->id;
+            }
+            
+            $categories = DB::table('categories')->get();
+            $brands = DB::table('brands')->get();
+            $caracs = DB::table('caracs')->get();
+
+            $sports = DB::table('sports')
+                ->whereNotIn('id', $arraySport)
+                ->get();
+
+            $userEquipement = $user->products;
+            $arrayUser = [];
+
+            foreach($userEquipement as $us){
+                $arrayUser[] = $us->id;
+            }
+
+            $equipements = DB::table('products')
+                ->whereNotIn('id', $arrayUser)
+                ->get();  
+        return view('front.user.annonce',['user' => $user,'equipements' => $user->products,'sports' => $sports,'equipements' => $equipements,'categories' => $categories,'brands' => $brands,'caracs' => $caracs]);
     }
 
     public function annonce_add(User $user, Request $request)

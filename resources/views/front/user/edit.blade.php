@@ -507,7 +507,7 @@
             {
                 $(categories).each( function( i, category ) {
                     if (category.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
-                        $("#prod_input").append('<span class="category_select">'+category.name+'</span> ');
+                        $("#prod_input").append('<span class="category_select btn btn-primary">'+category.name+'</span> ');
                     }
                 });
             }
@@ -516,8 +516,9 @@
         $('body').on('click','.category_select',function(e){
             $('.carac').remove();
             $('#prod_category').val($(this).html());
-            
+            var cat = 0;
             $(categories).each( function( i, category ) {
+                cat = 1;
                 if (category.name.toLowerCase() == $('#prod_category').val().toLowerCase()) {
                     $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
                     $(caracs).each( function( i, carac ) {
@@ -528,6 +529,11 @@
                     });
                 }
             });
+                if(cat == 0)
+                {
+                                       
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                }
             
             $("#prod_input").html('');
         });
@@ -545,9 +551,11 @@
             var val_length = $(this).val().length;
             var val = $(this).val();
             var input = $(this);
+            var cat = 0;
             if(val_length != 0)
             {
                 $(categories).each( function( i, category ) {
+                    cat = 1;
                     if (category.name.toLowerCase() == val.toLowerCase()) {                    
                         $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
                         $(caracs).each( function( i, carac ) {
@@ -558,6 +566,11 @@
                         });
                         }
                 });
+                if(cat == 0)
+                {
+                                       
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                }
             }
         });
     
@@ -578,7 +591,7 @@
             {
                 $(brands).each( function( i, brand ) {
                     if (brand.name.toLowerCase().substring(0, val_length) == val.toLowerCase()) {
-                        $("#brand_input").append('<span class="brand_select">'+brand.name+'</span> ');
+                        $("#brand_input").append('<span class="brand_select btn btn-primary">'+brand.name+'</span> ');
                     }
                 });
             }

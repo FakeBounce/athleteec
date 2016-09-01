@@ -613,6 +613,9 @@
                 data: fdata,
                 success: function(data) {
                    console.log('Success !');
+                    $('.send_msg').parent().append('Message envoyé avec succès !');
+                    $('.valid_form_assoc').remove();
+                    
                 },
                 error:function(jqXHR)
                 {

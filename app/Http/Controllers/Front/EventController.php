@@ -445,7 +445,7 @@ class EventController extends Controller
                 ]);
 
            
-           UsersEvents::create(array(
+           UsersEvents::firstOrCreate(array(
               'user_id' => $userC->id,
                'event_id' => $event->id,
                'is_admin' => false

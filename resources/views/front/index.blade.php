@@ -126,7 +126,7 @@
                             <div class="timeline-panel">
                                 <div class="timeline-body">
                                     <div class="post_activity_msg">
-                                        <h1>C4est votre première fois?</h1>
+                                        <h1>C'est votre première fois?</h1>
                                         <div>Postez votre humeur sportive pour commencer l'aventure ATHLETEEC!</div>
                                         <br>
                                         <div>Recherchez vos amis sportifs, des événements, des associations, des produits via la barre de recherche ! C'est simple et efficace..</div>
@@ -150,6 +150,7 @@
                     
                     
                     <?php 
+                        $i = 1;
                         if(!empty(Auth::user()->sports) && !empty($star_pub)) 
                         {
                     ?>
@@ -287,6 +288,7 @@
                     
                    
                     <?php
+                            $i = 0;
                         }
                     ?> 
                     
@@ -296,7 +298,7 @@
                     
                     
                     
-                    <?php $i = 0;$y = 0; ?>
+                    <?php $y = 0; ?>
                     @for($z =0; $z < count($publications);$z++)
                         <?php
                             $publication = $publications[$z];

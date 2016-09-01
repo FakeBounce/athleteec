@@ -46,7 +46,7 @@ table.panel-foo {
 }
 
 .timeline-2-cols > li.timeline-inverted {
-    float: right;
+    float: right!important;
     clear: none!important;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -59,7 +59,7 @@ table.panel-foo {
     margin-bottom: 20px;
     position: relative!important;
     width: 50%!important;
-    float: left;
+    float: left!important;
     left: 0px!important;
     clear: none!important; 
     top: 0px!important;

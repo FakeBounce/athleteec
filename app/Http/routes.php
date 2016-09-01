@@ -100,7 +100,7 @@ use Illuminate\Support\Facades\File;
         
        // Route::resource('photo', 'PhotoController');
         Route::resource('product', 'ProductController',['only' => ['show','edit']]);
-        Route::post('/product/{id}/update', ['as' => 'product.update', 'uses' => 'ProductController@update']);
+        Route::post('/product/{product}/update', ['as' => 'product.update', 'uses' => 'ProductController@update']);
         Route::get('/product/{product}/destroy', ['as' => 'product.destroy', 'uses' => 'ProductController@destroy']);
         Route::get('/product/{product}/comparator', ['as' => 'product.comparator', 'uses' => 'ProductController@comparator']);
         Route::get('/product/{id}/compare', ['as' => 'product.compare', 'uses' => 'ProductController@compare']);

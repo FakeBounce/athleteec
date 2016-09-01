@@ -438,6 +438,7 @@
                                                     <div class="btn btn-default"><i class="fa fa-camera"></i></div>
                                                 </label>
                                                 <input id="file-input-modal" name="productpicture" type="file" accept="image/*"/>
+                                                <img id="preview2" class="picture-size" src="http://placehold.it/200x200" alt="your image" style="max-width:200px;max-height:200px;"/>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary pull-right" >Ajouter</button>

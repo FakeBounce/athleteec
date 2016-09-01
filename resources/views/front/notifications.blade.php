@@ -18,7 +18,7 @@
                                @if($notification->notification=='users_links')
                                    @if($notification->accepter==true)
                                        <li class="list-group-item">
-                                           <a href="/user/{{$notification->userL_id}}">
+                                           <a href="/user/{{$notification->userL_id}}" name="{{$notification->id}}">
                                                <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                                <span>&nbsp;Ajout de {{$notification->libelle}} à votre liste d'amis.&nbsp;</span>
                                                <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
@@ -26,7 +26,7 @@
                                        </li>
                                    @else
                                        <li class="list-group-item">
-                                           <a href="/friends">
+                                           <a href="/friends" name="{{$notification->id}}">
                                                <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                                <span>&nbsp;Demande d'ami de&nbsp;{{$notification->libelle}}
                                                    <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
@@ -36,7 +36,7 @@
                                @elseif($notification->notification=='events')
                                    @if($notification->accepter==0)
                                        <li class="list-group-item">
-                                           <a href="/event/{{$notification->action_id}}">
+                                           <a href="/event/{{$notification->action_id}}" name="{{$notification->id}}">
                                                <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                                <span>&nbsp;<b>{{$notification->libelle}}</b> vous invite à rejoindre l'événement&nbsp;<b>{{$notification->action_name}}</b></span>
                                                <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
@@ -44,7 +44,25 @@
                                        </li>
                                    @else
                                        <li class="list-group-item">
-                                           <a href="/event/{{$notification->action_id}}">
+                                           <a href="/event/{{$notification->action_id}}" name="{{$notification->id}}">
+                                               <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
+                                               <span>&nbsp;<b>{{$notification->libelle}}</b> à rejoint l'événement&nbsp;<b>{{$notification->action_name}}</b></span>
+                                               <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
+                                           </a>
+                                       </li>
+                                   @endif
+                               @elseif($notification->notification=='events')
+                                   @if($notification->accepter==0)
+                                       <li class="list-group-item" >
+                                           <a href="/event/{{$notification->action_id}}" name="{{$notification->id}}">
+                                               <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
+                                               <span>&nbsp;<b>{{$notification->libelle}}</b> vous invite à rejoindre l'événement&nbsp;<b>{{$notification->action_name}}</b></span>
+                                               <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
+                                           </a>
+                                       </li>
+                                   @else
+                                       <li class="list-group-item" >
+                                           <a href="/event/{{$notification->action_id}}" name="{{$notification->id}}">
                                                <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                                <span>&nbsp;<b>{{$notification->libelle}}</b> à rejoint l'événement&nbsp;<b>{{$notification->action_name}}</b></span>
                                                <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
@@ -54,7 +72,7 @@
                                @elseif($notification->notification=='associations')
 
                                    <li class="list-group-item">
-                                       <a href="/association/{{$notification->action_id}}">
+                                       <a href="/association/{{$notification->action_id}}" name="{{$notification->id}}">
                                            <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                            <span>&nbsp;<b>{{$notification->libelle}}</b> à rejoint l'association&nbsp;<b>{{$notification->action_name}}</b></span>
                                            <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
@@ -63,14 +81,14 @@
                                @elseif($notification->notification=='produitsajout')
                                    @if($notification->accepter == 1)
                                        <li class="list-group-item">
-                                           <a href="/equipement/{{$notification->action_id}}">
+                                           <a href="/equipement/{{$notification->action_id}}" name="{{$notification->id}}">
                                                <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                                <span>&nbsp;<b>{{$notification->libelle}}</b> à valider votre produit : <b>{{$notification->action_name}}</b></span>
                                                <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
                                            </a>
                                        </li>
                                    @else
-                                       <li class="list-group-item">
+                                       <li class="list-group-item" name="{{$notification->id}}">
                                            <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                            <span>&nbsp;<b>{{$notification->libelle}}</b> à refuser votre produit : <b>{{$notification->action_name}}</b></span>
                                            <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
@@ -78,7 +96,7 @@
                                    @endif
                                @elseif($notification->notification=='produitsajoutstar')
                                <li class="list-group-item">
-                                   <a href="/equipement/{{$notification->action_id}}">
+                                   <a href="/equipement/{{$notification->action_id}}" name="{{$notification->id}}">
                                        <div class="label label-info feed-icon"><i class="fa fa-info"></i></div>
                                        <span>&nbsp;<b>{{$notification->libelle}}</b> avez ajouté votre équipement au catalogue avec succès : <b>{{$notification->action_name}}</b></span>
                                        <span class="feed-time"><em>{{$notification->timeAgo($notification->created_at)}}</em></span>
@@ -97,4 +115,21 @@
            </div>
        </div>
    </div>
+@endsection
+
+@section('js')
+
+<script>
+    $('.list-group-item a').on('mouseover', function(e){
+        var id = $(this).attr('name');
+        if(id){
+            $.ajax({
+             url: '/notifications/'+id+'/see',
+             type: 'post',
+             success: function(data) {}
+             });
+        }
+
+    });
+</script>
 @endsection

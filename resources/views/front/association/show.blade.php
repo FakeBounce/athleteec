@@ -601,7 +601,7 @@
         
         $('body').on('click','.send_msg',function(){
            $('.form_assoc').remove();
-            $(this).parent().append('<form class="form_assoc"><textarea name="text"></textarea><a class="valid_form_assoc">Valider</a></form>');
+            $(this).parent().append('<form class="form_assoc"><textarea name="text" style="width:100%; margin:5px 0px;"></textarea><a class="valid_form_assoc btn btn-primary pull-right">Valider</a></form>');
         });
         
         $('body').on('click','.valid_form_assoc',function(){

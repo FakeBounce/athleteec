@@ -243,11 +243,22 @@ class EventController extends Controller
                         $potential_user->is_authorised = 1;
                         $potential_user->save();
                     }
+                   Notifications::firstOrCreate([
+                   'user_id' => $friend->id,
+                   'userL_id' => Auth::user()->id, //OSEF du nom de la colonne, on récupère les bonnes info grace à la colone notification.
+                   'libelle' => Auth::user()->firstname." ".Auth::user()->lastname,
+                   'action_id' => $event->id,
+                   'action_name' => $event->name,
+                   'notification' => 'events',
+                   'accepter' => 1,
+                   'afficher' => true]);
+                    
                     
                     return \Response::json(array(
                         'friend'=>$friend,
                         'event_id'=>$event->id,
                         'user'=>Auth::user(),
+                        'event'=>$event,
                     ));
                 }
             }

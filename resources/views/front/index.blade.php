@@ -12,10 +12,10 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="button-group filters-button-group">
-                <button class="button is-checked" data-filter="*">show all</button>
+            <div class="button-group filters-button-group text-center">
+                <button class="button is-checked filter_b noborder btn-primary" data-filter="*" style="margin-bottom:15px;">Aucun filtre</button><br>
                 @foreach($sports as $sport)
-                <button class="button" data-filter=".sport<?php echo $sport->id; ?>"><?php echo $sport->name; ?></button>
+                <button class="button filter_b btn-primary noborder" data-filter=".sport<?php echo $sport->id; ?>"><?php echo $sport->name; ?></button>
                 @endforeach
             </div>
                         <div class="col-md-12">
@@ -161,17 +161,13 @@
                                     }else{
                                         echo "activite-".$star_pub->activity->id;
                                     }
-                                ?>" class="
+                                ?>" class="star 
                                     <?php 
                                            if(!is_null($star_pub->activity)) 
                                            { 
                                                echo "sport".$star_pub->activity->sport->id; 
                                            }
                                     ?> publicationJS">
-                                <div class="timeline-badge primary">
-                                    <a href="#"><i rel="tooltip" title="{{ $star_pub->date_start }}" class="glyphicon glyphicon-record"></i>
-                                    </a>
-                                </div>
                                 <div class="timeline-panel">
                                     <div class="timeline-heading row" style="margin: 0;">
                                         <div style="margin:0 10px 0 0;float:left;">
@@ -180,7 +176,6 @@
                                             </a>
                                         </div>
                                         <div style="margin: 10px;float:left;">
-                                    Truc de star
                                             @if($star_pub->user->star == true)
                                                 <img src="{{ asset('images/medal-1.png') }}" alt="medal">
                                             @endif
@@ -192,7 +187,6 @@
                                                 <span>{{ $star_pub->user->firstname.' '.$star_pub->user->lastname}}</span><br>
                                             @endif
                                             <small><i aria-hidden="true" class="fa fa-clock-o"></i> {{ $star_pub->timeAgo($star_pub->created_at) }}</small>
-
                                             <div class="btn-group dropdown-post">
                                                 <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="font-size: 8px;"><i class="fa fa-chevron-down"></i>
                                                 </button>

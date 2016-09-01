@@ -28,7 +28,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('front.user.index');
+        
+        return Redirect::to('/');
     }
 
     /**

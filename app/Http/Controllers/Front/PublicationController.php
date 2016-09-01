@@ -43,7 +43,15 @@ class PublicationController extends Controller
      */
     public function store(Request $request)
     {
+        if(empty($request->input('message_status')))
+        {
+            $request->merge([ 'message_status' => ".5656897299ad797df9f7ds9f87e9f879ze8f79ds7f98e7" ]);
+        }
         $publication = HelperPublication::store($request);
+        if($publication['message'] == ".5656897299ad797df9f7ds9f87e9f879ze8f79ds7f98e7")
+        {
+            $publication['message'] = "";
+        }
         if(is_array($publication) && array_key_exists('errors',$publication)){
             return Redirect::back()->withErrors($publication['errors']);
         }

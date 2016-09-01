@@ -66,11 +66,6 @@ $user = Auth::user();
             <span class="lien-barre-user">Ajouter un produit en cliquant sur le bouton <i class="fa fa-balance-scale" aria-hidden="true"></i></span><br>
             Attention, seuls les produits de la même catégorie peuvent être ajoutés au comparateur !
             
-            @if($errors->any())
-            <h4>{{$errors->first()}}</h4>
-            @endif
-            
-            
             <h4 class="blanc">Evènements :</h4>
 
             <ul>
@@ -226,6 +221,10 @@ $user = Auth::user();
         </nav>
     </header>
     <div class="main">
+        
+            @if($errors->any())
+            <h4 style="color:red">{{$errors->first()}}</h4>
+            @endif
         @yield('content')
     </div>
     <footer class="blanc">2016 - <a href="/" target="_blank" class="blanc">ATHLETEEC</a> / <a href="{{ route('front.obligatoire.confidentialite')}}" class="blanc">Confidentialité</a> / <a href="{{ route('front.obligatoire.mentionslegales')}}" class="blanc">Mentions Légales</a></footer>

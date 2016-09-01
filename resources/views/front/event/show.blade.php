@@ -67,11 +67,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <h2>L'événement commence : {{ $event->started_at }}</h2>
-            </div>
-            <div class="col-md-6">
-                <h2>et se termine : {{ $event->end_at }}</h2>
+            <div class="col-md-12 text-center">
+                <h2>L'événement commence le {{ date('d/m/Y \à H\hm',strtotime($event->started_at)) }} et se termine le {{ date('d/m/Y \à H\hm',strtotime($event->end_at)) }}</h2>
             </div>
         </div>
         <div class="row">

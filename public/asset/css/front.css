@@ -2,24 +2,70 @@
     margin-bottom: 20px;
 }
 
+.sch .row{
+    margin-bottom: 0px;
+}
+
 table.panel-foo {
-    border: 3px solid  #ddd;
+    width: 100%;
+    overflow-x: auto;
+    max-width: 1180px;
+    display: block;
+    padding:15px;
 }
 
-tbody {
+.tab-content tbody {
     border: 3px solid #ddd;
 }
 
-tr {
+.tab-content tr {
     border: 3px solid #ddd;
 }
 
-th {
+.tab-content th {
     border: 3px solid #ddd;
+    text-align: center;
+    padding: 10px;
 }
 
-td {
-    border: 3px solid #ddd;
+.eq_row{
+    margin-bottom:15px;
+}
+.tab-content td {    border: 3px solid #ddd;
+    max-width: 250px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.timeline-2-cols > li.star > .timeline-panel:before {
+    display: none;
+}
+
+.timeline-2-cols > li.star > .timeline-panel:after {
+    display: none;
+}
+
+.timeline-2-cols > li.timeline-inverted {
+    float: right;
+    clear: none!important;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.timeline-2-cols > li {
+    margin-bottom: 20px;
+    position: relative!important;
+    width: 50%!important;
+    float: left;
+    left: 0px!important;
+    clear: none!important; 
+    top: 0px!important;
+}
+
+.noborder {
+    border:none;
+}
+.filter_b {
+    padding:10px;
 }
 
 .timeline-2-cols .timeline-footer .comments .comment, .timeline-2-cols .timeline-footer .comments .comment-body {
@@ -36,6 +82,12 @@ td {
 
 .comment:hover .action{
     display:block;
+}
+
+.timeline-2-cols > li.star {
+    width: 100%!important;
+    margin-left: 3%;
+    margin-top: 0px;
 }
 
 .timeline-2-cols .timeline-footer .comments .comment > .pull-left {

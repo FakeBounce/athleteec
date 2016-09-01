@@ -28,7 +28,7 @@
                         <!-- END TABS SELECTIONS-->
                         <div class="row">
                             <!-- BEGIN TABS SECTIONS-->
-                            <div id="profileTabContent" class="tab-content">
+                            <div id="profileTabContent" class="tab-content panel-default">
                                     
                                     <div class="col-md-12 padding-bottom-correct" style="margin-top:30px;">
                                         <div class="col-xs-2">
@@ -39,21 +39,6 @@
                                             <h1>
                                                 {{ $product->name }}
                                             </h1>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-12 padding-bottom-correct">
-                                        <label for="category" class="col-md-2">Catégorie</label>
-                                        <div class="col-md-10">
-                                            @foreach($categories as $category)
-                                                @if($category->id == $product->category_id)
-                                                    {{ $category->name }}
-                                                    <?php 
-                                                        $cat = $category;
-                                                        break;
-                                                    ?>
-                                                @endif
-                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="col-md-12 padding-bottom-correct">
@@ -71,9 +56,24 @@
                                         </div>
                                     </div>
                                     
+                                    <div class="col-md-12 padding-bottom-correct">
+                                        <label for="category" class="col-md-2">Catégorie</label>
+                                        <div class="col-md-10">
+                                            @foreach($categories as $category)
+                                                @if($category->id == $product->category_id)
+                                                    {{ $category->name }}
+                                                    <?php 
+                                                        $cat = $category;
+                                                        break;
+                                                    ?>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    
                                     @foreach($caracs as $carac)
-                                        @if($carac->category_id == $cat->id)
                                             <?php $done = 0; ?>
+                                        @if($carac->category_id == $cat->id)
                                             <div class="col-md-12 padding-bottom-correct">
                                                 <label for="brand" class="col-md-2">
                                                     {{ $carac->name }}
@@ -135,7 +135,7 @@
                                         <a href=" {{ route('product.comparator',['product' => $product]) }}"><button type="submit" class="btn btn-primary pull-left" ><i class="fa fa-balance-scale" aria-hidden="true"></i></button></a>
                                     
                                     @endif
-                                            @if(Auth::user()->id != $product->user_id)
+                                            @if(Auth::user()->id == $product->user_id)
                                                 <a href=" {{ route('product.destroy',['product' => $product]) }}"> <button type="submit" class="btn btn-primary pull-right" >Supprimer</button></a> 
                                                 <a href=" {{ route('product.edit',['id' => $product->id]) }}"><button type="submit" class="btn btn-primary pull-right" >Modifier</button></a>&nbsp;
                                             @endif
@@ -243,10 +243,12 @@
             var val_length = $(this).val().length;
             var val = $(this).val();
             var input = $(this);
+            var cat = 0;
             if(val_length != 0)
             {
                 $(categories).each( function( i, category ) {
-                    if (category.name.toLowerCase() == val.toLowerCase()) {                    
+                    if (category.name.toLowerCase() == val.toLowerCase()) {  
+                        cat = 1;
                         $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
                         $(caracs).each( function( i, carac ) {
                             if(carac.category_id == category.id)
@@ -255,7 +257,17 @@
                             }
                         });
                         }
+                    else
+                    {
+                                            
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                    }
                 });
+                if(cat == 0)
+                {
+                                       
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                }
             }
         });
     

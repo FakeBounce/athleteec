@@ -55,7 +55,7 @@
 
                         @if(Auth::user()->id != $user->id)
                             <div>
-                                <a href="{{ url('conversation/'.$user->user_id) }}" class="btn btn-block btn-success"><i class="fa fa-envelope-alt"></i>Envoyer un
+                                <a href="{{ url('conversation/'.$user->id) }}" class="btn btn-block btn-success"><i class="fa fa-envelope-alt"></i>Envoyer un
                                     message</a>
                             </div>
 
@@ -316,8 +316,9 @@
                                 <div class="tab-pane fade" id="equipement">
                                     <div class="row">
                                         @foreach($user->products as $equipment)
-                                            <div class="row">
-                                                <div class="col-md-2">
+                                            <?php $done = 1; ?>
+                                            <div class="col-xs-6 col-md-4 eq_row">
+                                                <div class="col-md-4">
                                                     <div class="equipement-cadre">
                                                         <div class="equipement-box">
                                                             <img src="{{asset('images/'.$equipment->picture)}}"
@@ -325,7 +326,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-10">
+                                                <div class="col-md-8">
                                                     <a href="{{ route('product.show',['product' => $equipment]) }}" target="_blank">
                                                         <dd>{{ $equipment->name }}</dd>
                                                     </a>
@@ -355,9 +356,10 @@
                                 <div class="tab-pane fade" id="annonce">
                                     <div class="row">
                                         @foreach($user->products as $annonce)
+                                            <?php $done = 0; ?>
                                             @if($annonce->sell == 1)
-                                                <div class="row">
-                                                    <div class="col-md-2">
+                                                <div class="col-xs-6 col-md-4 eq_row">
+                                                    <div class="col-md-4">
                                                         <div class="equipement-cadre">
                                                             <div class="equipement-box">
                                                                 <img src="{{asset('images/'.$annonce->picture)}}"
@@ -365,7 +367,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-10">
+                                                    <div class="col-md-8">
                                                         <a href="{{ route('product.show',['id' => $equipment->id]) }}">
                                                             <dd>{{ $annonce->name }}</dd>
                                                         </a>

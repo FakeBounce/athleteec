@@ -11,10 +11,10 @@
 @endsection
 
 @section('content')
-<div class="container" style="margin-bottom:50px;">
+<div class="container sch" style="margin-bottom:50px;">
     @if(!empty($results))
     <div class="row">
-        <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+        <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 panel-foo panel-default" style="padding-bottom:20px;">
             <div class="page-header" style="border-bottom-color: #31353E">
                 <h2>Personnes</h2>
             </div>
@@ -50,9 +50,9 @@
         </div>
     </div>
     @endif
-    @if(!empty($resultsProduct))
+    @if(!empty($resultsProduct->first()))
         <div class="row">
-            <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+            <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 panel-foo panel-default" style="padding-bottom:20px;">
                 <div class="page-header" style="border-bottom-color: #31353E">
                     <h2>Équipements</h2>
                 </div>
@@ -95,7 +95,7 @@
     @endif
     @if(!empty($resultsAssociation))
         <div class="row">
-            <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+            <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 panel-foo panel-default" style="padding-bottom:20px;">
                 <div class="page-header" style="border-bottom-color: #31353E">
                     <h2>Associations</h2>
                 </div>
@@ -118,14 +118,14 @@
     @endif
     @if(!empty($resultsEvent))
         <div class="row">
-            <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+            <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 panel-foo panel-default" style="padding-bottom:20px;">
                 <div class="page-header" style="border-bottom-color: #31353E">
                     <h2>Evènements</h2>
                 </div>
                 @foreach($resultsEvent as $assos)
                     <div class="col-sm-4 col-md-2">
                         <div class="team-member">
-                            <a href="{{ route('association.show', ['association' => $assos['id']]) }}">
+                            <a href="{{ route('event.show', ['association' => $assos['id']]) }}">
                                 <figure class="member-photo">
                                     <img class="imgonefriend" src="{{ $assos['picture'] }}" alt="{{ $assos['name'] }}" width="100px" height="100px">
                                 </figure>

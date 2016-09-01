@@ -25,7 +25,7 @@
                         <!-- BEGIN TABS SELECTIONS-->
                         <!-- END TABS SELECTIONS-->
                         <div class="row">
-                        <div id="profileTabContent" class="tab-content">
+                        <div id="profileTabContent" class="tab-content panel-default">
                                 <form class="panel-foo" method="post" action="{{route('product.update',['id'=>$product->id])}}" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <div class="col-md-12 padding-bottom-correct" style="margin-top:30px;">
@@ -58,7 +58,7 @@
                                     
                                     @foreach($caracs as $carac)
                                         @if($carac->category_id == $cat->id)
-                                            <div class="col-md-12 padding-bottom-correct">
+                                            <div class="col-md-12 padding-bottom-correct carac">
                                                 <label for="brand" class="col-md-2">
                                                     {{ $carac->name }}
                                                 </label>
@@ -100,6 +100,7 @@
                                                     <div class="btn btn-default"><i class="fa fa-camera"></i></div>
                                                 </label>
                                                 <input id="file-input-modal" name="productpicture" type="file" accept="image/*"/>
+                                                <img id="preview2" class="picture-size" src="http://placehold.it/200x200" alt="your image" style="max-width:200px;max-height:200px;"/>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary pull-right" >Valider les modifications</button>
@@ -126,6 +127,13 @@
         var caracs = new Array();
         @foreach($caracs as $carac)
             caracs[i] = {!! json_encode($carac) !!};
+            i++;
+        @endforeach
+        
+        var i = 0;
+        var carac_vals = new Array();
+        @foreach($carac_vals as $carac_val)
+            carac_vals[i] = {!! json_encode($carac_val) !!};
             i++;
         @endforeach
         
@@ -178,16 +186,33 @@
         $('body').on('click','.category_select',function(e){
             $('.carac').remove();
             $('#prod_category').val($(this).html());
+            var done = 0;
             
             $(categories).each( function( i, category ) {
                 if (category.name.toLowerCase() == $('#prod_category').val().toLowerCase()) {
                     $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
                     $(caracs).each( function( i, carac ) {
+                            done = 0;
                         if(carac.category_id == category.id)
                         {
-                                $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..."></div></div>');
+                            if(carac.category_id == category.id)
+                            {
+                                $(carac_vals).each( function( i, carac_val ) {
+                                    if(carac_val.carac_id == carac.id && done ==0)
+                                    {
+                                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..." value="'+carac_val.value+'"></div></div>');
+                                        done = 1;
+                                    }
+                                });
+                                if(done == 0)
+                                {
+                                    $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..."></div></div>');
+                                }
+                            }    
                         }
                     });
+                    
+                             
                 }
             });
             
@@ -203,23 +228,43 @@
         });
     
         $('body').on('blur','#prod_category',function(e){
+            
             $('.carac').remove();
             var val_length = $(this).val().length;
             var val = $(this).val();
             var input = $(this);
+            var done = 0;
+            var cat = 0;
             if(val_length != 0)
             {
                 $(categories).each( function( i, category ) {
-                    if (category.name.toLowerCase() == val.toLowerCase()) {                    
+                    if (category.name.toLowerCase() == val.toLowerCase()) {    
+                        cat = 1;
                         $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
                         $(caracs).each( function( i, carac ) {
+                            done = 0;
                             if(carac.category_id == category.id)
                             {
+                                $(carac_vals).each( function( i, carac_val ) {
+                                    if(carac_val.carac_id == carac.id && done ==0)
+                                    {
+                                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..." value="'+carac_val.value+'"></div></div>');
+                                        done = 1;
+                                    }
+                                });
+                                if(done == 0)
+                                {
                                     $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><label class="col-md-2 control-label">'+carac.name+'</label><div class="col-md-10"><input type="text" class="form-control" name="carac_'+carac.category_id+'" placeholder="..."></div></div>');
+                                }
                             }
                         });
                         }
                 });
+                if(cat == 0)
+                {
+                                       
+                        $("#prod_input").parent().parent().after('<div class="col-md-12 padding-bottom-correct carac"><button class="btn btn-primary carac_add">Ajouter une caractéristique à la catégorie</button><div>');
+                }
             }
         });
     

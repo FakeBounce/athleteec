@@ -82,7 +82,7 @@ $(document).ready(function() {
     });
 
     $("body").on('change','#file-input-modal',function(e){
-        readURL(this);
+        readURL2(this);
     });
 
     $("body").on('click','#addphoto' ,function(e){
@@ -106,13 +106,17 @@ $(document).ready(function() {
     });
     $("body").on('submit','#submit-modal-product' ,function(e){
         e.preventDefault();
-        var $form = $(this);
+        var $form = new FormData($("#submit-modal-product")[0]);
+        
+        // Main magic with files here
+        $form.append('productpicture', $('.modal input[type=file]')[0].files[0]); 
+        
         $.ajax({
             url: "/product/addAjax",
             type: 'post',
             contentType: false, // obligatoire pour de l'upload
             processData: false, // obligatoire pour de l'upload
-            data: new FormData($("#submit-modal-product")[0]),
+            data: $form,
             success: function(data) {
                 if(data['success'] == true)
                 {
@@ -136,7 +140,7 @@ $(document).ready(function() {
                                 "<div class='col-md-1'>" +
                                     "<div class='equipement-cadre'>" +
                                         "<div class='equipement-box'>"+
-                                            "<img src='http://localhost/images"+$picture+"'"+"alt='Avatar' class='img-thumbnail img-responsive'>"+
+                                            "<img src='http://athleteec.fakebounce.fr/images"+$picture+"'"+"alt='Avatar' class='img-thumbnail img-responsive'>"+
                                         "</div>"+
                                     "</div>"+
                                 "</div>"+
@@ -411,7 +415,7 @@ $(document).ready(function() {
             $.ajax({
              url: '/notifications/'+id+'/see',
              type: 'post',
-             success: function(data) {}
+             success: function(data) { console.log('Read.');}
              });
         }
 
@@ -602,6 +606,18 @@ function readURL(input) {
 
         reader.onload = function (e) {
             $('#preview').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function readURL2(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#preview2').attr('src', e.target.result);
         }
 
         reader.readAsDataURL(input.files[0]);

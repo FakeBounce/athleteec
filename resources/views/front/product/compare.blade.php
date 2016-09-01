@@ -28,11 +28,17 @@
                         <!-- END TABS SELECTIONS-->
                         <div class="row">
                             <!-- BEGIN TABS SECTIONS-->
-                            <div id="profileTabContent" class="tab-content">
-                        
+                            <div id="profileTabContent" class="tab-content panel-default">
+                                
                                 @if(!empty(Session::get('produits')))
 
                                     <table style="width:100%;" class="panel-foo">
+                                        
+                                        
+                        
+                                        <h1 class="text-center" style="margin:0px;background:white;padding:15px;">
+                                            Comparateur de produits <br><br>
+                                        </h1>
                                         
                                     <?php 
                                         $produits = Session::get('produits');       
@@ -46,7 +52,7 @@
                                                         {
                                                     ?>
                                                     <td>
-                                                        <a href="{{ route('product.remove',['id' => $produits[$i]]) }}"><i class="fa fa-minus-circle" aria-hidden="true"  style="cursor:pointer;"></i> {{$produits[$i]['name']}} </a>
+                                                        <h4><a href="{{ route('product.remove',['id' => $produits[$i]]) }}" > {{$produits[$i]['name']}} <i class="fa fa-minus-circle" aria-hidden="true"  style="cursor:pointer;margin-left:10px;"></i></a></h4>
                                                     </td>
                                                     <?php          
                                                         }
@@ -168,7 +174,7 @@
                                                         {
                                                     ?>
                                                     <td>
-                                                        {{$produits[$i]['url']}}
+                                                        <a href="{{$produits[$i]['url']}}">{{$produits[$i]['url']}}</a>
                                                     </td>
                                                     <?php          
                                                         }

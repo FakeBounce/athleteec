@@ -79,6 +79,7 @@ class ProductController extends Controller
             $product->description = htmlspecialchars($data['description']);
             $product->category_id = $category->id;
             $product->brand_id = $brand->id;
+            $product->user_id = Auth::user()->id;
             $product->price= $data['price'];
             $product->sell=0;
             $product->url = htmlspecialchars($data['url']);
@@ -86,13 +87,13 @@ class ProductController extends Controller
 
             if ($request->hasFile('productpicture')) {
                 $guid = sha1(time());
-                $imageName = $guid . "." . $request->file('productpicture')->getClientOriginalExtension();;
+                $imageName = $guid . "." . $request->file('productpicture')->getClientOriginalExtension();
 
                 $request->file('productpicture')->move(
                     public_path() . '/images/products', $imageName
                 );
 
-                $imageName .= '/images/products/'.$imageName;
+                $imageName = '/products/'.$imageName;
 
                 $product->picture = $imageName;
             }
@@ -119,7 +120,7 @@ class ProductController extends Controller
                 foreach($new_caracs as $new_carac)
                 {
                     $carac = new Carac();
-                    $carac->name = $new_carac;
+                    $carac->name = ucfirst($new_carac);
                     $carac->category_id = $category->id;
 
                     $carac->save();
@@ -134,15 +135,16 @@ class ProductController extends Controller
                 $p = 0;
                 foreach($new_caracs_val as $new_val)
                 {
-                    $new_val = new Carac_val();
-                    $new_val->value = $new_carac;
-                    $new_val->carac_id = $caracs_id[$p];
-                    $new_val->product_id = $product->id;
+                    $new_values = new Carac_val();
+                    $new_values->value = ucfirst($new_val);
+                    $new_values->carac_id = $caracs_id[$p];
+                    $new_values->product_id = $product->id;
 
-                    $new_val->save();
+                    $new_values->save();
                     $p++;
                 }
             }
+            
             
             return \Response::json(array(
                 'success' => true,
@@ -208,8 +210,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        
-        if($product->user_id != Auth::user()->id)
+        if($product->user_id == Auth::user()->id)
         {
             
             $categories = DB::table('categories')->get();
@@ -220,7 +221,12 @@ class ProductController extends Controller
         }
         else
         {
-            return view('front.product.edit',['product' => $product]);
+            
+            $categories = DB::table('categories')->get();
+            $brands = DB::table('brands')->get();
+            $caracs = DB::table('caracs')->get();
+            $carac_vals = DB::table('carac_vals')->get();
+            return view('front.product.show',['product' => $product,'caracs' =>$caracs,'carac_vals' =>$carac_vals, 'categories'=>$categories,'brands'=>$brands]);
         }
     }
 
@@ -232,43 +238,20 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
-    {
-        
+    {   
         if($product->user_id == Auth::user()->id)
         {
             $data = $request->all();
-
-            $rules = [
-                'description' => 'required',
-                'category' => 'required',
-                'brand' => 'required',
-                'productpicture' => 'mimes:jpeg,png,jpg'
-            ];
-
-            $messages = [
-                'description.required'    => 'Description requise',
-                'category.required'    => 'Catégorie requise',
-                'brand.required'    => 'Marque requise',
-                'productpicture.mimes'      => 'Le format de l\'image n\'est pas pris en charge (jpeg,png,jpg)'
-            ];
-
-            $validator = Validator::make($data,$rules,$messages);
-
-             if ($validator->fails()) {
-                return array(
-                    'errors' => $validator
-                );
-            }
-            
             
             $category = Category::where('name',$data['category'])->get()->first();
             
             if(empty($category))
             {
+                $category = new Category();
                 $category->name = htmlspecialchars(trim($data['category']));
                 $category->save();
             }
-
+            
             $brand = Brand::where('name',$data['brand'])->get()->first();
             
             if(empty($brand))
@@ -285,24 +268,34 @@ class ProductController extends Controller
             $product->url = htmlspecialchars($data['url']);
 
 
+
             if ($request->hasFile('productpicture')) {
                 $guid = sha1(time());
-                $imageName = $guid . "." . $request->file('productpicture')->getClientOriginalExtension();;
+                $imageName = $guid . "." . $request->file('productpicture')->getClientOriginalExtension();
 
                 $request->file('productpicture')->move(
                     public_path() . '/images/products', $imageName
                 );
 
-                $imageName .= '/images/products/'.$imageName;
+                $imageName = '/products/'.$imageName;
 
                 $product->picture = $imageName;
             }
-            else{
-                $product->picture = "/default_picture/default-equipement.jpg";
-                $imageName = "default_picture/default-equipement.jpg";
-            }
 
             $product->save();
+            
+            
+            foreach($data as $key=>$value)
+            {
+                if(substr( $key, 0, 6 ) == "carac_")
+                {
+                    echo substr( $key, 6 ).'<br>';
+                    $car_val = Carac_val::where('id',substr( $key, 6 ))->get()->first();
+                    $car_val->value = ucfirst(htmlspecialchars(trim($value)));
+                    $car_val->save();
+                }
+            }
+            
             
             if(!empty($data['new_carac_name']))
             {
@@ -312,7 +305,7 @@ class ProductController extends Controller
                 foreach($new_caracs as $new_carac)
                 {
                     $carac = new Carac();
-                    $carac->name = $new_carac;
+                    $carac->name = ucfirst($new_carac);
                     $carac->category_id = $category->id;
 
                     $carac->save();
@@ -327,12 +320,12 @@ class ProductController extends Controller
                 $p = 0;
                 foreach($new_caracs_val as $new_val)
                 {
-                    $new_val = new Carac_val();
-                    $new_val->value = $new_carac;
-                    $new_val->carac_id = $caracs_id[$p];
-                    $new_val->product_id = $product->id;
+                    $new_values = new Carac_val();
+                    $new_values->value = ucfirst($new_val);
+                    $new_values->carac_id = $caracs_id[$p];
+                    $new_values->product_id = $product->id;
 
-                    $new_val->save();
+                    $new_values->save();
                     $p++;
                 }
             }
